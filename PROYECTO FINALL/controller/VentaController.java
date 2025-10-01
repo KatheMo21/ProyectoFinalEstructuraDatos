@@ -3,35 +3,84 @@ package controller;
 import Model.Producto;
 import Model.Usuario;
 import Model.Venta;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class VentaController {
+
     private List<Venta> listaVentas;
 
     public List<Venta> getListaVentas() {
-    return listaVentas;
-}
+        return listaVentas;
+    }
 
     public VentaController() {
         this.listaVentas = new ArrayList<>();
     }
 
-    public void registrarVenta(Usuario usuario, Producto producto, int cantidad, double monto) {
-        // Crear la venta
-    Venta venta = new Venta(usuario.getNombreUsuario(), producto.getNombreProducto(), cantidad, monto);
+    public void registrarVenta(Scanner scanner, Usuario usuario, ProductoController productoController, UsuarioController usuarioController) {
 
-    // Disminuir el stock del producto
-    int stockActual = producto.getStock();
-    if(cantidad <= stockActual) {
-        producto.setStock(stockActual - cantidad);
-        listaVentas.add(venta);
-        System.out.println("Venta registrada: " + venta);
-        System.out.println("Stock actualizado de " + producto.getNombreProducto() + ": " + producto.getStock());
-    } else {
-        System.out.println("No hay suficiente stock para realizar la venta. Stock actual: " + stockActual);
-    }
+        productoController.listarProductos();
+        System.out.print("ID del producto a vender: ");
+
+        int idProducto;
+        String idString = scanner.nextLine();
+
+        try {
+            idProducto = Integer.parseInt(idString);
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido. Debe ser un número.");
+            return;
+        }
+        Producto p = productoController.buscarProductos(idProducto);
+        if (p == null) {
+            System.out.println("Producto no encontrado. Verifica el ID ingresado.");
+            return;
+        }
+
+        System.out.print("Cantidad a vender: ");
+        int cantidad;
+        String cantidadStr = scanner.nextLine();
+        try {
+            cantidad = Integer.parseInt(cantidadStr);
+        } catch (NumberFormatException e) {
+            System.out.println("Cantidad inválida. Debe ser un número.");
+            return;
+        }
+        if (cantidad <= 0) {
+            System.out.println("La cantidad debe ser mayor a cero.");
+            return;
+        }
+
+        // Verificar si el usuario tiene suficiente dinero
+        if (usuario.getSaldo() < usuario.getSaldo()) {
+            System.out.println("No tienes suficiente dinero para comprar este producto. Dinero disponible: " + usuario.getSaldo() + ", precio: " + p.getPrecio());
+            return;
+        }
+        // Buscar el admin real
+        Usuario admin = usuarioController.buscarUsuario("admin");
+        if (admin == null) {
+            System.out.println("No se encontró el usuario administrador.");
+            return;
+        }
+        // Realizar la transacción
+        usuario.setSaldo(usuario.getSaldo() - p.getPrecio() * cantidad);
+        admin.setSaldo(admin.getSaldo() + p.getPrecio());
+        listaVentas.add(new Venta(usuario.getNombreUsuario(), p.getNombreProducto(), p.getStock(), p.getPrecio()));
+        System.out.println("Compra realizada exitosamente. Dinero restante: " + usuario.getSaldo());
+        System.out.println("Dinero del administrador: " + admin.getSaldo());
+
+        // DISMINUIR STOCK DEL PRODUCTO
+        int stockActual = p.getStock();
+        if (p.getStock() <= stockActual) {
+            p.setStock(stockActual - cantidad);
+            listaVentas.add(new Venta(usuario.getNombreUsuario(), p.getNombreProducto(), cantidad, p.getPrecio()));
+            System.out.println("Venta registrada: " + usuario.getNombreUsuario() + " compró " + cantidad + " de " + p.getNombreProducto() + " por " + (p.getPrecio() * cantidad));
+            System.out.println("Stock actualizado de " + p.getNombreProducto() + ": " + p.getStock());
+        } else {
+            System.out.println("No hay suficiente stock para realizar la venta. Stock actual: " + stockActual);
+        }
     }
 
     public void mostrarVentas() {
@@ -42,6 +91,24 @@ public class VentaController {
             for (Venta v : listaVentas) {
                 System.out.println(v);
             }
+        }
+    }
+
+     // METODO PARA VER EL HISTORIAL DEL USUARIO
+    public void mostrarHistorialUsuario(Usuario usuario) {
+        System.out.println("\nTus compras:");
+        for (Venta venta : listaVentas) {
+            if (venta.getUsuario().equals(usuario.getNombreUsuario())) {
+                System.out.println(venta);
+            }
+        }
+    }
+
+    // METODO PARA MOSTRAR EL HISTORIAL DE VENTAS
+    public void historialVentas() {
+        System.out.println("\nHistorial de ventas:");
+        for (Venta venta : listaVentas) {
+            System.out.println(venta);
         }
     }
 }

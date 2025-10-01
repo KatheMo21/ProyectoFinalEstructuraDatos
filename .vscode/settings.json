@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.fontFamily": "Cascadia Code, Consolas, 'Segoe UI Emoji'",
+    "terminal.integrated.commandsToSkipShell": [
+        ""
+    ]
+}

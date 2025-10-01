@@ -3,7 +3,7 @@ package Model;
 public class Usuario {
     private String nombreUsuario;
     private String contrasena;
-     private String rol;
+    private String rol;
     private double saldo;
  
 

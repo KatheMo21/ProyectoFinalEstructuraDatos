@@ -2,7 +2,6 @@ package controller;
 
 import Model.Producto;
 import Model.Proveedor;
-
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -170,7 +169,7 @@ public class ProductoController {
         System.out.println("Producto eliminado.");
     }
 
-    public void menuCRUD(Scanner scanner) {
+    public void menuCrudProductos(Scanner scanner) {
         while (true) {
             System.out.println("\n--- CRUD PRODUCTOS ---");
             System.out.println("1. Listar productos");

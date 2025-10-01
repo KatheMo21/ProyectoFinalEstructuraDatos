@@ -45,7 +45,7 @@ public class ProveedorController {
         return listaProveedores;
     }
 
-    public void menuCRUD(Scanner scanner) {
+    public void menuCrudProveedores(Scanner scanner) {
         while (true) {
             System.out.println("\n--- MENU PROVEEDORES ---");
             System.out.println("1) Listar proveedores");

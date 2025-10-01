@@ -1,9 +1,9 @@
 package controller;
 
 import Model.Usuario;
-import java.util.TreeSet;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 public class UsuarioController {
     
@@ -11,13 +11,13 @@ public class UsuarioController {
     private TreeSet<Usuario> listaUsuarios = new TreeSet<>(Comparator.comparing(Usuario::getNombreUsuario));
 
     // METODO PARA CREAR USUARIO ADMIN Y CLIENTE DEMOSTRACION
-    public void crearUsuarioAdmin_Cliente() {
-        Usuario admin = new Usuario("admin", "admin123", "ADMIN");
-        Usuario cliente = new Usuario("cliente", "cliente123", "CLIENTE");
-        cliente.setSaldo(200000.0); // Dinero inicial para el cliente
-        listaUsuarios.add(admin);
-        listaUsuarios.add(cliente);
-    }
+    // public void crearUsuarioAdmin_Cliente() {
+    //     Usuario admin = new Usuario("admin", "admin123", "ADMIN");
+    //     Usuario cliente = new Usuario("cliente", "cliente123", "CLIENTE");
+    //     cliente.setSaldo(200000.0); // Dinero inicial para el cliente
+    //     listaUsuarios.add(admin);
+    //     listaUsuarios.add(cliente);
+    // }
 
     // METODO PARA INICIAR SESION
     public Usuario iniciarSesion(Scanner scanner) {
@@ -87,6 +87,8 @@ public class UsuarioController {
         }
     }
 
+    
+
     ///////// METODO PARA ACTUALIZAR USUARIO //////////
     /// El método .trim() elimina los espacios en blanco al inicio y al final de la cadena. es ideal usarlo para asegurarnos que no se ingresen 
     /// nombres vacíos o con espacios.
@@ -141,7 +143,7 @@ public class UsuarioController {
     }
 
     //////////// MENU CRUD USUARIOS ////////////
-   public void menuCRUD(Scanner scanner) {
+   public void menuCrudUsuarios(Scanner scanner) {
         while (true) {
             System.out.println("\n==============================");
             System.out.println(" |      📋 CRUD DE USUARIOS    |");

@@ -20,6 +20,7 @@ public class Venta {
         this.fecha = LocalDateTime.now();
     }
 
+
     ////////// METODOS DE ACCESO //////////
    
      public String getUsuario() {
