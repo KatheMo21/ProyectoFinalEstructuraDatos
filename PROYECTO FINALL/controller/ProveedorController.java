@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ProveedorController {
     private ArrayList<Proveedor> listaProveedores = new ArrayList<>();
 
-    public void registrarProveedor(Scanner scanner) {
+    public Proveedor registrarProveedor(Scanner scanner) {
         System.out.print("Ingrese ID del proveedor: ");
         int id = Integer.parseInt(scanner.nextLine());
         System.out.print("Ingrese nombre del proveedor: ");
@@ -18,6 +18,7 @@ public class ProveedorController {
         Proveedor nuevo = new Proveedor(id, nombre, contacto);
         listaProveedores.add(nuevo);
         System.out.println("Proveedor registrado: " + nuevo);
+        return nuevo;
     }
 
     public Proveedor buscarProveedor(int id) {

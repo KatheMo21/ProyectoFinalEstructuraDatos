@@ -1,6 +1,8 @@
 package controller;
 
 import Model.Producto;
+import Model.Proveedor;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,18 +11,28 @@ public class ProductoController {
     private ArrayList<Producto> listaProductos = new ArrayList<>();
     private int nextId = 1;
 
+    private ProveedorController proveedorController;
+
+    //Agregue instacia de proveedory cree uno nuevo para pasarlo al metodo subirProductos
+    // y asociarla el producto a un proveedor
+    Proveedor proveedorOne = new Proveedor(1,"World Meditation","18768463846");
+
+    public ProductoController(ProveedorController proveedorController) {
+    this.proveedorController = proveedorController;
+}
+
     public void subirProductos() {
 
         listaProductos.add(new Producto(1, "Jardín meditación", 128000, 10,
-                "Trae: Base redonda en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", null));
+                "Trae: Base redonda en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", proveedorOne));
         listaProductos.add(new Producto(2, "Jardín Protección", 65200, 15,
-                "Trae: Base caracol en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", null));
+                "Trae: Base caracol en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", proveedorOne));
         listaProductos.add(new Producto(3, "Porta incienso mandala", 24500, 20,
                 "El aroma del incienso puede ayudar a relajar el sistema nervioso y reducir el estrés, además de favorecer la concentración.",
-                null));
+                proveedorOne));
         listaProductos.add(new Producto(4, "Porta vela luna", 27300, 12,
                 "La luz de una vela simboliza la purificación, es capaz de llenar de calma el ambiente, y entrar en contacto con nuestra luz interior.",
-                null));
+                proveedorOne));
 
     }
 
@@ -33,7 +45,10 @@ public class ProductoController {
     }
 
     // METODO PARA CREAR PRODUCTOS
-    public void crearProductos(Scanner scanner) {
+    //modifique este metodo para asociarle el stock cuando se cree y al igual llame una instancia
+    //de proveedor y llame el metodo registrar proveedor para asociarlo un proveedor siempre que se 
+    // cree un nuevoProducto
+    public void crearProductos(Scanner scanner, ProveedorController proveedorController) {
 
         System.out.print("Id del Producto: ");
         int id = scanner.nextInt();
@@ -62,7 +77,13 @@ public class ProductoController {
             return;
         }
 
-        listaProductos.add(new Producto(id, nombre, precio, 0, descripcion, null));
+        System.out.print("Stock: ");
+        int stock = scanner.nextInt();
+        scanner.nextLine();
+
+        Proveedor proveedor = proveedorController.registrarProveedor(scanner);
+
+        listaProductos.add(new Producto(id, nombre, precio,stock, descripcion,proveedor));
         System.out.println("Producto creado exitosamente.");
     }
 
@@ -149,7 +170,7 @@ public class ProductoController {
                     listarProductos();
                     break;
                 case "2":
-                    crearProductos(scanner);
+                    crearProductos(scanner, proveedorController);
                     break;
                 case "3":
                     editarProductos(scanner);

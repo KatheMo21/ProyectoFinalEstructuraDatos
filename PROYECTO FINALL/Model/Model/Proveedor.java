@@ -11,6 +11,12 @@ public class Proveedor {
         this.contacto = contacto;
     }
 
+    public Proveedor() {
+        this.id = id;
+        this.nombre = nombre;
+        this.contacto = contacto;
+    }
+
     public int getId() { return id; }
     public String getNombre() { return nombre; }
     public String getContacto() { return contacto; }
