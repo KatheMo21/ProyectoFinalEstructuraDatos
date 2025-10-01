@@ -48,24 +48,40 @@ public class Main {
                 case "5":
                     usuarioLogueado = usuarioController.iniciarSesion(scanner);
                     break;
-                case "6":
+                    case "6":
                     if (usuarioLogueado == null) {
                         System.out.println("Debe iniciar sesión primero.");
                         break;
                     }
+                
                     productoController.listarProductos();
                     System.out.print("Ingrese ID del producto a comprar: ");
                     int id = Integer.parseInt(scanner.nextLine());
                     var producto = productoController.buscarProductos(id);
+                
                     if (producto == null) {
                         System.out.println("Producto no encontrado.");
                         break;
                     }
+                
                     System.out.print("Cantidad: ");
                     int cantidad = Integer.parseInt(scanner.nextLine());
                     double monto = producto.getPrecio() * cantidad;
+                
+                    //  Validar saldo del cliente
+                    if (usuarioLogueado.getSaldo() < monto) {
+                        System.out.println("❌ Saldo insuficiente. Su saldo actual es: $" + usuarioLogueado.getSaldo());
+                        break;
+                    }
+                
+                    // Descontar saldo y registrar la venta
+                    usuarioLogueado.setSaldo(usuarioLogueado.getSaldo() - monto);
                     ventaController.registrarVenta(usuarioLogueado, producto, cantidad, monto);
+                
+                    System.out.println("✅ Compra realizada con éxito.");
+                    System.out.println("Nuevo saldo: $" + usuarioLogueado.getSaldo());
                     break;
+                
                 case "7":
                     System.out.println("Saliendo del sistema...");
                     return;
