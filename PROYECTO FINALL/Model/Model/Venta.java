@@ -10,13 +10,15 @@ public class Venta {
     private String usuario;
     private String producto;
     private double monto;
+    private int cantidad;
     private LocalDateTime fecha;
 
     ///// CONSTRUCTORES /////
  
-    public Venta(String usuario, String producto, double monto) {
+    public Venta(String usuario, String producto, int cantidad, double monto) {
         this.usuario = usuario;
         this.producto = producto;
+        this.cantidad = cantidad;
         this.monto = monto;
         this.fecha = LocalDateTime.now();
     }
@@ -29,6 +31,10 @@ public class Venta {
 
     public String getProducto() {
         return producto;
+    }
+
+    public int getCantidad(){
+        return cantidad;
     }
 
     public double getMonto() {
