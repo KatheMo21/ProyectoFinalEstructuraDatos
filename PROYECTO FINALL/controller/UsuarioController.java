@@ -1,12 +1,14 @@
 package controller;
 
 import Model.Usuario;
-import java.util.ArrayList;
+import java.util.TreeSet;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class UsuarioController {
-
-    private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+    
+    // TreeSet con comparador para evitar duplicados
+    private TreeSet<Usuario> listaUsuarios = new TreeSet<>(Comparator.comparing(Usuario::getNombreUsuario));
 
     // METODO PARA CREAR USUARIO ADMIN Y CLIENTE DEMOSTRACION
     public void crearUsuarioAdmin_Cliente() {

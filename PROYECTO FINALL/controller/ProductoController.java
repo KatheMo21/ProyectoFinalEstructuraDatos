@@ -3,12 +3,12 @@ package controller;
 import Model.Producto;
 import Model.Proveedor;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class ProductoController {
 
-    private ArrayList<Producto> listaProductos = new ArrayList<>();
+    private LinkedList<Producto> listaProductos = new LinkedList<>();
     private int nextId = 1;
 
     private ProveedorController proveedorController;
