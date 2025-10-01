@@ -98,6 +98,7 @@ public class ProductoController {
     }
 
     // METODO PARA EDITAR PRODUCTOS
+    //Modifique  este metodo para actualizarle el  nuevo stock y la nueva descripcion
     public void editarProductos(Scanner scanner) {
         System.out.print("ID del producto a editar: ");
         int id;
@@ -132,6 +133,20 @@ public class ProductoController {
                 System.out.println("Precio inválido. Debe ser un número.");
             }
         }
+        System.out.print("Nuevo Stock: ");
+        int nuevoStock = scanner.nextInt();
+        scanner.nextLine();
+        if(nuevoStock < 0){
+            System.out.println("El stock no puede ser menor que cero");
+        }else {
+            p.setStock(nuevoStock);
+        }
+        System.out.print("Nuevo descripción: ");
+        String nuevaDescripcion = scanner.nextLine();
+        if(!nuevaDescripcion.isEmpty()){
+            p.setDescricpion(nuevaDescripcion);
+        }
+
         System.out.println("Producto actualizado.");
     }
 

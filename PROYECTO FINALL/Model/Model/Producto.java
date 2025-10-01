@@ -28,7 +28,10 @@ public class Producto {
     
     public int getStock() { return stock; }
     public void setStock(int stock) { this.stock = stock; }
-    
+
+    public String getDescripcion(){return descripcion;}
+    public void setDescricpion(String descripcion){this.descripcion=descripcion;}
+
     public Proveedor getProveedor() { return proveedor; }
     
     @Override
