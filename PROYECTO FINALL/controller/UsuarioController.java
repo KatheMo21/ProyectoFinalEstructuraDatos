@@ -150,7 +150,7 @@ public class UsuarioController {
             System.out.println(" 4) 🗑️  Eliminar usuario");
             System.out.println(" 5) ↩️  Volver");
             System.out.println("==============================");
-            System.out.print("👉 Seleccione una opción: ");
+            System.out.print("Seleccione una opción: ");
             String opcion = scanner.nextLine();
             switch (opcion) {
                 case "1":

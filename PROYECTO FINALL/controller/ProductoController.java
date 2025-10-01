@@ -11,11 +11,17 @@ public class ProductoController {
 
     public void subirProductos() {
 
-        listaProductos.add(new Producto(1, "Jardín meditación", "Trae : Base redonda en concreto,  figura en yeso , arena, piedras, rastrillo, vela y palo santo.", 128000));
-        listaProductos.add(new Producto(2, "Jardín Protección", "Trae : Base caracol en concreto,  figura en yeso, arena, piedras, rastrillo, vela, y palo santo.", 65200));
-        listaProductos.add(new Producto(3, "Porta incienso mandala", "El aroma del incienso puede ayudar a relajar el sistema nervioso y reducir el estrés, además de favorecer la concentración.", 24500));
-        listaProductos.add(new Producto(4, "Porta vela luna", "La luz de una vela simboliza la purificación, es capaz de llenar de calma el ambiente, y entrar en contacto con nuestra luz interior.", 27300));
-       
+        listaProductos.add(new Producto(1, "Jardín meditación", 128000, 10,
+                "Trae: Base redonda en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", null));
+        listaProductos.add(new Producto(2, "Jardín Protección", 65200, 15,
+                "Trae: Base caracol en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", null));
+        listaProductos.add(new Producto(3, "Porta incienso mandala", 24500, 20,
+                "El aroma del incienso puede ayudar a relajar el sistema nervioso y reducir el estrés, además de favorecer la concentración.",
+                null));
+        listaProductos.add(new Producto(4, "Porta vela luna", 27300, 12,
+                "La luz de una vela simboliza la purificación, es capaz de llenar de calma el ambiente, y entrar en contacto con nuestra luz interior.",
+                null));
+
     }
 
     // METODOS PARA VER LA LISTA DE PRODUCTOS
@@ -56,7 +62,7 @@ public class ProductoController {
             return;
         }
 
-        listaProductos.add(new Producto(id, nombre, descripcion, precio));
+        listaProductos.add(new Producto(id, nombre, precio, 0, descripcion, null));
         System.out.println("Producto creado exitosamente.");
     }
 
@@ -128,7 +134,7 @@ public class ProductoController {
         System.out.println("Producto eliminado.");
     }
 
-     public void menuCRUD(Scanner scanner) {
+    public void menuCRUD(Scanner scanner) {
         while (true) {
             System.out.println("\n--- CRUD PRODUCTOS ---");
             System.out.println("1. Listar productos");

@@ -1,69 +1,39 @@
 package Model;
 
 public class Producto {
-    // atributos
-    private int id; 
+    private int id;
     private String nombreProducto;
-    private String descripcion;
     private double precio;
+    private int stock;
+    private String descripcion;
+    private Proveedor proveedor;
 
-
-    // constructor
-
-    public Producto( int id, String nombreProducto, String descripcion, double precio) {
+    public Producto(int id, String nombreProducto, double precio, int stock, String descripcion,Proveedor proveedor) {
         this.id = id;
         this.nombreProducto = nombreProducto;
-        this.descripcion = descripcion;
         this.precio = precio;
-    }
-
-    // metodos de acceso
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombreProducto() {
-        return nombreProducto;
-    }
-
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
+        this.stock = stock;
         this.descripcion = descripcion;
+        this.proveedor = proveedor;
     }
 
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    // metodo toString
-
-   @Override
+    public int getId() { return id; }
+    public void setId(int id){this.id=id;}
+    
+    public String getNombreProducto() { return nombreProducto; }
+    public void setNombreProducto(String nombre){this.nombreProducto=nombreProducto;}
+    
+    public double getPrecio() { return precio; }
+    public void setPrecio(Double precio){this.precio=precio;}
+    
+    public int getStock() { return stock; }
+    public void setStock(int stock) { this.stock = stock; }
+    
+    public Proveedor getProveedor() { return proveedor; }
+    
+    @Override
     public String toString() {
-        return "Producto{" +
-                "id=" + id +
-                ", nombreProducto='" + nombreProducto + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", precio=" + precio +
-                '}';
+        return "Producto [ID=" + id + ", Nombre=" + nombreProducto + ", Precio=$" + precio +
+                ", Stock=" + stock + ", Proveedor=" + proveedor.getNombre() + "]";
     }
-    
 }
-
-    
-
