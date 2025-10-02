@@ -21,7 +21,7 @@ public class Main {
 
         Usuario usuarioLogueado = null;
 
-         // Códigos ANSI para colores
+        // Códigos ANSI para colores
         final String RESET = "\u001B[0m";
         final String CYAN = "\u001B[36m";
         final String GREEN = "\u001B[32m";
@@ -29,32 +29,30 @@ public class Main {
         final String RED = "\u001B[31m";
         final String PURPLE = "\u001B[35m";
 
-        System.out.println("\nRecuerde que los usuarios disponibles en la tienda son:" + "\n"+ "═══════════ADMIN ||||| CLIENTE ═════");
+        System.out.println("\nRecuerde que los usuarios disponibles en la tienda son:" + "\n" + "═══════════ADMIN ||||| CLIENTE ═════");
 
-        
+        System.out.println("Bienvenido a la tienda virtual IntencionadaMente");
+        while (true) {
 
-    
-            System.out.println("Bienvenido a la tienda virtual IntencionadaMente");
-            while (true) {
-
-                if (usuarioLogueado == null) {
+            if (usuarioLogueado == null) {
                 System.out.println("\n1. Iniciar sesión\n2. Registrarse\n3. Salir");
                 System.out.print("Seleccione una opción: ");
                 String opcion = scanner.nextLine();
-                    switch (opcion) {
-                        case "1":
-                            usuarioLogueado = usuarioController.iniciarSesion(scanner);
-                            break;
-                        case "2":
-                            usuarioController.registrarNuevoUsuario(scanner);
-                            break;
-                        case "3":
-                            System.out.println("¡Hasta luego!");
-                            return;
-                        default:
-                            System.out.println("Opción inválida.");
-                    }
-                } else if (usuarioLogueado.getRol().equals("ADMIN")) {
+                switch (opcion) {
+                    case "1":
+                        usuarioLogueado = usuarioController.iniciarSesion(scanner);
+                        break;
+                    case "2":
+                        usuarioController.registrarNuevoUsuario(scanner);
+                        break;
+                    case "3":
+                        System.out.println("¡Hasta luego!");
+                            scanner.close();
+                        return;
+                    default:
+                        System.out.println("Opción inválida.");
+                }
+            } else if (usuarioLogueado.getRol().equals("ADMIN")) {
 
                 System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);
                 System.out.println(CYAN + "  ║            TIENDA VIRTUAL INTENCIONADAMENTE             ║" + RESET);
@@ -73,15 +71,28 @@ public class Main {
 
                 String opcion = scanner.nextLine();
                 switch (opcion) {
-                    case "1": usuarioController.menuCrudUsuarios(scanner); break;
-                    case "2": productoController.menuCrudProductos(scanner); break;
-                    case "3": proveedorController.menuCrudProveedores(scanner); break;
-                    case "4": ventaController.historialVentas(); break;
-                    case "5":
-                        System.out.println("Dinero disponible (admin): " + usuarioLogueado.getSaldo());
+                    case "1":
+                        usuarioController.menuCrudUsuarios(scanner);
                         break;
-                    case "6": usuarioLogueado = null; break;
-                    default: System.out.println("Opción inválida.");
+                    case "2":
+                        productoController.menuCrudProductos(scanner);
+                        break;
+                    case "3":
+                        proveedorController.menuCrudProveedores(scanner);
+                        break;
+                    case "4":
+                        ventaController.historialVentas();
+                        break;
+                    case "5":
+                        System.out.println("Saldo del administrador: " + usuarioLogueado.getSaldo());
+                        System.out.println("Saldo acumulado en ventas (caja): " + ventaController.getSaldoVenta());
+                        break;
+
+                    case "6":
+                        usuarioLogueado = null;
+                        break;
+                    default:
+                        System.out.println("Opción inválida.");
                 }
             } else {
                 System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);
@@ -98,23 +109,29 @@ public class Main {
                 System.out.println(PURPLE + "  ║  -> Seleccione una opción:                    ║" + RESET);
                 System.out.println(CYAN + "  ╚═══════════════════════════════════════════════╝" + RESET);
 
-
                 String opcion = scanner.nextLine();
                 switch (opcion) {
-                    case "1": productoController.listarProductos();
+                    case "1":
+                        productoController.listarProductos();
+                        break;
                     case "2":
                         ventaController.registrarVenta(scanner, usuarioLogueado, productoController, usuarioController);
                         System.out.println("Dinero disponible: " + usuarioLogueado.getSaldo());
                         break;
-                    case "3": ventaController.mostrarVentas(); break;
+                    case "3":
+                        ventaController.mostrarHistorialUsuario(usuarioLogueado);
+                        break;
+
                     case "4":
                         System.out.println("Dinero disponible (cliente): " + usuarioLogueado.getSaldo());
                         break;
-                    case "5": usuarioLogueado = null; break;
-                    default: System.out.println("Opción inválida.");
+                    case "5":
+                        usuarioLogueado = null;
+                        break;
+                    default:
+                        System.out.println("Opción inválida.");
                 }
             }
-        }                
+        }
     }
-}   
-
+}

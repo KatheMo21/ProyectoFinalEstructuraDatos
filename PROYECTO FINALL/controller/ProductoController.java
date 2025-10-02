@@ -14,11 +14,11 @@ public class ProductoController {
 
     //Agregue instacia de proveedory cree uno nuevo para pasarlo al metodo subirProductos
     // y asociarla el producto a un proveedor
-    Proveedor proveedorOne = new Proveedor(1,"World Meditation","18768463846");
+    Proveedor proveedorOne = new Proveedor(1, "World Meditation", "18768463846");
 
     public ProductoController(ProveedorController proveedorController) {
-    this.proveedorController = proveedorController;
-}
+        this.proveedorController = proveedorController;
+    }
 
     public void subirProductos() {
 
@@ -37,6 +37,10 @@ public class ProductoController {
 
     // METODOS PARA VER LA LISTA DE PRODUCTOS
     public void listarProductos() {
+        if (listaProductos.isEmpty()) {
+            System.out.println("No hay productos registrados.");
+            return;
+        }
         System.out.println("Productos disponibles:");
         for (Producto P : listaProductos) {
             System.out.println(P);
@@ -48,48 +52,70 @@ public class ProductoController {
     //de proveedor y llame el metodo registrar proveedor para asociarlo un proveedor siempre que se 
     // cree un nuevoProducto
     public void crearProductos(Scanner scanner, ProveedorController proveedorController) {
+        int id = nextId++; // ID autoincremental
 
-        System.out.print("Id del Producto: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Nombre del Productos: ");
-        String nombre = scanner.nextLine();
-        if (nombre.trim().isEmpty()) {
+        System.out.print("Nombre del Producto: ");
+        String nombre = scanner.nextLine().trim();
+        if (nombre.isEmpty()) {
             System.out.println("El nombre no puede estar vacío.");
             return;
         }
-        System.out.print("Descripción: ");
-        String descripcion = scanner.nextLine();
 
-        System.out.print("Precio: ");
-        double precio;
-        String precioStr = scanner.nextLine();
-        try {
-            precio = Double.parseDouble(precioStr);
-            if (precio < 0) {
-                System.out.println("El precio no puede ser negativo.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Precio inválido. Debe ser un número.");
+        if (buscarProductoPorNombre(nombre) != null) {
+            System.out.println("Ya existe un producto con ese nombre.");
             return;
         }
 
-        System.out.print("Stock: ");
-        int stock = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("Descripción: ");
+        String descripcion = scanner.nextLine();
 
+        double precio = -1;
+        while (precio < 0) {
+            System.out.print("Precio: ");
+            try {
+                precio = Double.parseDouble(scanner.nextLine());
+                if (precio < 0) {
+                    System.out.println("El precio no puede ser negativo.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Precio inválido. Debe ser un número.");
+            }
+        }
+
+        int stock = -1;
+        while (stock < 0) {
+            System.out.print("Stock: ");
+            try {
+                stock = Integer.parseInt(scanner.nextLine());
+                if (stock < 0) {
+                    System.out.println("El stock no puede ser negativo.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Stock inválido. Debe ser un número entero.");
+            }
+        }
+
+        // Seleccionar o crear proveedor
         Proveedor proveedor = proveedorController.registrarProveedor(scanner);
 
-        listaProductos.add(new Producto(id, nombre, precio,stock, descripcion,proveedor));
-        System.out.println("Producto creado exitosamente.");
+        listaProductos.add(new Producto(id, nombre, precio, stock, descripcion, proveedor));
+        System.out.println("El producto" + nombre + " ha sido creado exitosamente.");
     }
 
     // METODO PARA BUSCAR PODUCTOS POR ID
     public Producto buscarProductos(int id) {
         for (Producto p : listaProductos) {
             if (p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /// METODO PARA BUSCAR PRODUCTO POR NOMBRE
+    public Producto buscarProductoPorNombre(String nombre) {
+        for (Producto p : listaProductos) {
+            if (p.getNombreProducto().equalsIgnoreCase(nombre)) {
                 return p;
             }
         }
@@ -135,14 +161,14 @@ public class ProductoController {
         System.out.print("Nuevo Stock: ");
         int nuevoStock = scanner.nextInt();
         scanner.nextLine();
-        if(nuevoStock < 0){
+        if (nuevoStock < 0) {
             System.out.println("El stock no puede ser menor que cero");
-        }else {
+        } else {
             p.setStock(nuevoStock);
         }
         System.out.print("Nuevo descripción: ");
         String nuevaDescripcion = scanner.nextLine();
-        if(!nuevaDescripcion.isEmpty()){
+        if (!nuevaDescripcion.isEmpty()) {
             p.setDescricpion(nuevaDescripcion);
         }
 

@@ -18,22 +18,46 @@ public class UsuarioController {
     // listaUsuarios.add(admin);
     // listaUsuarios.add(cliente);
     // }
-
+    // METODO PARA INICIAR SESION
+    // public Usuario iniciarSesion(Scanner scanner) {
+    //     System.out.print("Usuario: ");
+    //     String nombre = scanner.nextLine();
+    //     System.out.print("Contraseña: ");
+    //     String contrasena = scanner.nextLine();
+    //     for (Usuario u : listaUsuarios) {
+    //         if (u.getNombreUsuario().equals(nombre) && u.getContrasena().equals(contrasena)) {
+    //             System.out.println("Login exitoso como " + u.getRol());
+    //             System.out.println("Dinero disponible: " + u.getSaldo());
+    //             return u;
+    //         }
+    //     }
+    //     System.out.println("Los datos ingresados son incorrectas.");
+    //     return null;
+    // }
     // METODO PARA INICIAR SESION
     public Usuario iniciarSesion(Scanner scanner) {
-        System.out.print("Usuario: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Contraseña: ");
-        String contrasena = scanner.nextLine();
-        for (Usuario u : listaUsuarios) {
-            if (u.getNombreUsuario().equals(nombre) && u.getContrasena().equals(contrasena)) {
-                System.out.println("Login exitoso como " + u.getRol());
-                System.out.println("Dinero disponible: " + u.getSaldo());
-                return u;
+        try {
+            if (listaUsuarios.isEmpty()) {
+                System.out.println("Por el momento no hay usuarios registrados en el sistema, por favor registrese primero.");
+                return null;
             }
 
+            System.out.print("Usuario: ");
+            String nombre = scanner.nextLine();
+            System.out.print("Contraseña: ");
+            String contrasena = scanner.nextLine();
+
+            for (Usuario u : listaUsuarios) {
+                if (u.getNombreUsuario().equals(nombre) && u.getContrasena().equals(contrasena)) {
+                    System.out.println("Login exitoso como " + u.getRol());
+                    System.out.println("Dinero disponible: " + u.getSaldo());
+                    return u;
+                }
+            }
+            System.out.println("Usuario o contraseña incorrectos.");
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error durante el inicio de sesión: " + e.getMessage());
         }
-        System.out.println("Los datos ingresados son incorrectas.");
         return null;
     }
 
@@ -47,6 +71,7 @@ public class UsuarioController {
         return null;
     }
 
+    ////////// METODO PARA BUSCAR ADMINISTRADOR //////////
     public Usuario buscarAdministrador() {
         for (Usuario u : listaUsuarios) {
             if (u.getRol().equalsIgnoreCase("ADMIN")) {
@@ -56,6 +81,7 @@ public class UsuarioController {
         return null; // si no hay, retorna null
     }
 
+    /////////// METODO PARA VALIDAR LA CONTRASEÑA ////////////
     public boolean validarClave(String contraseña) {
         if (contraseña == null || contraseña.length() < 8) {
             return false;
@@ -76,9 +102,12 @@ public class UsuarioController {
             }
         }
 
-        if (tieneMayuscula == 1) {} 
-        if (tieneNumero == 1) {}
-        if (tieneEspecial == 1) {}
+        if (tieneMayuscula == 1) {
+        }
+        if (tieneNumero == 1) {
+        }
+        if (tieneEspecial == 1) {
+        }
         if (contraseña.length() >= 8 && tieneMayuscula > 0 && tieneNumero > 0 && tieneEspecial > 0) {
             System.out.println("Contraseña guardada");
             return true;
@@ -140,11 +169,16 @@ public class UsuarioController {
 
     // METODO PARA MOSTRAR USUARIOS EXISTENTES
     public void mostrarUsuarios() {
+        if (listaUsuarios.isEmpty()) {
+            System.out.println("No hay usuarios registrados en el sistema.");
+            return;
+        }
         System.out.println("\nUsuarios:");
         for (Usuario u : listaUsuarios) {
             System.out.println("Usuario: " + u.getNombreUsuario() + " | Clave: " + u.getContrasena() + " | Rol: "
                     + u.getRol() + " | Dinero: " + u.getSaldo());
         }
+
     }
 
     ///////// METODO PARA ACTUALIZAR USUARIO //////////
@@ -163,16 +197,24 @@ public class UsuarioController {
             System.out.println("Usuario no encontrado. Verifica el nombre ingresado.");
             return;
         }
+
         System.out.print("Nuevo nombre (actual: " + u.getNombreUsuario() + "): ");
         String nuevoNombre = scanner.nextLine();
         if (!nuevoNombre.isEmpty()) {
             u.setNombreUsuario(nuevoNombre);
-        }
+        }  else {
+                System.out.println("El nombre no puede estar vacío.");
+                return;
+            }
+
         System.out.print("Nueva contraseña: ");
         String nuevaContrasena = scanner.nextLine();
         if (!nuevaContrasena.isEmpty()) {
             u.setContrasena(nuevaContrasena);
-        }
+        } else {
+                System.out.println("La contraseña no cumple los requisitos.");
+            }
+
         System.out.print("Nuevo rol (ADMIN/CLIENTE): ");
         String nuevoRol = scanner.nextLine().toUpperCase();
         if (nuevoRol.equals("ADMIN") || nuevoRol.equals("CLIENTE")) {
@@ -180,7 +222,8 @@ public class UsuarioController {
         } else if (!nuevoRol.isEmpty()) {
             System.out.println("Rol inválido. Debe ser ADMIN o CLIENTE.");
         }
-        System.out.println("Usuario actualizado.");
+        System.out.println("Usuario" + u.getNombreUsuario() + " ha sido actualizado correctamente.");
+        
     }
 
     ////////// METODO PARA ELIMINAR USUARIO //////////
@@ -198,7 +241,7 @@ public class UsuarioController {
             return;
         }
         listaUsuarios.remove(u);
-        System.out.println("Usuario eliminado.");
+        System.out.println("Usuario" + u.getNombreUsuario() + " ha sido eliminado correctamente" );
     }
 
     //////////// MENU CRUD USUARIOS ////////////
