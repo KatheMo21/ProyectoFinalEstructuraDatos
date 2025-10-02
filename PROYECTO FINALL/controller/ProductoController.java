@@ -49,12 +49,12 @@ public class ProductoController {
         }
 
         System.out.println(CYAN + "\n+----+----------------------+------------+--------+-----------------------------+-------------------+" + RESET);
-        System.out.printf("| %-2s | %-30s | %-10s | %-6s | %-50s | %-17s |%n",
+        System.out.printf("| %-2s | %-20s | %-10.2s | %-6s | %-27s | %-17s |%n",
                 "ID", "Nombre", "Precio", "Stock", "Descripción", "Proveedor");
         System.out.println(CYAN + "+----+----------------------+------------+--------+-----------------------------+-------------------+" + RESET);
 
         for (Producto p : listaProductos) {
-            System.out.printf("| %-2d | %-20s | %-10.2f | %-6d | %-27s | %-17s |%n",
+            System.out.printf("| %-2d | %-30s | %-10.2f | %-6d | %-50s | %-17s |%n",
                     p.getId(),
                     p.getNombreProducto(),
                     p.getPrecio(),
