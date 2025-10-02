@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class VentaController {
 
     private List<Venta> listaVentas;
+    private double saldoVenta;
 
     public List<Venta> getListaVentas() {
         return listaVentas;
@@ -17,9 +18,11 @@ public class VentaController {
 
     public VentaController() {
         this.listaVentas = new ArrayList<>();
+        this.saldoVenta = 0.0;
     }
 
-    public void registrarVenta(Scanner scanner, Usuario usuario, ProductoController productoController, UsuarioController usuarioController) {
+    public void registrarVenta(Scanner scanner, Usuario usuario, ProductoController productoController,
+            UsuarioController usuarioController) {
 
         productoController.listarProductos();
         System.out.print("ID del producto a vender: ");
@@ -52,31 +55,51 @@ public class VentaController {
             System.out.println("La cantidad debe ser mayor a cero.");
             return;
         }
-
-        // Verificar si el usuario tiene suficiente dinero
-        if (usuario.getSaldo() < usuario.getSaldo()) {
-            System.out.println("No tienes suficiente dinero para comprar este producto. Dinero disponible: " + usuario.getSaldo() + ", precio: " + p.getPrecio());
+        if (p.getStock() < cantidad) {
+            System.out.println("No hay productos Stock actual: " + p.getStock());
             return;
         }
+
+        
+
         // Buscar el admin real
-        Usuario admin = usuarioController.buscarUsuario("admin");
+        Usuario admin = usuarioController.buscarAdministrador();
         if (admin == null) {
             System.out.println("No se encontró el usuario administrador.");
             return;
         }
+
+        // Verificar si el usuario tiene suficiente dinero
+        // ... código para leer producto y cantidad ...
+        double totalVentaIndividual = p.getPrecio() * cantidad;
+        double saldoAdministrador = admin.getSaldo();
+        saldoAdministrador += totalVentaIndividual;
+        admin.setSaldo(saldoAdministrador);
         // Realizar la transacción
-        usuario.setSaldo(usuario.getSaldo() - p.getPrecio() * cantidad);
-        admin.setSaldo(admin.getSaldo() + p.getPrecio());
-        listaVentas.add(new Venta(usuario.getNombreUsuario(), p.getNombreProducto(), p.getStock(), p.getPrecio()));
-        System.out.println("Compra realizada exitosamente. Dinero restante: " + usuario.getSaldo());
-        System.out.println("Dinero del administrador: " + admin.getSaldo());
+        if (totalVentaIndividual <= usuario.getSaldo()) {
+            usuario.setSaldo(usuario.getSaldo() - totalVentaIndividual);
+            saldoVenta += totalVentaIndividual; // acumulado general
+            p.setStock(p.getStock() - cantidad);
+            listaVentas.add(new Venta(usuario, p, cantidad, totalVentaIndividual));
+
+            System.out.println("Compra realizada. Saldo restante: " + usuario.getSaldo());
+        } else {
+            System.out.println("Saldo insuficiente.");
+            return;
+        }
 
         // DISMINUIR STOCK DEL PRODUCTO
         int stockActual = p.getStock();
-        if (p.getStock() <= stockActual) {
-            p.setStock(stockActual - cantidad);
-            listaVentas.add(new Venta(usuario.getNombreUsuario(), p.getNombreProducto(), cantidad, p.getPrecio()));
-            System.out.println("Venta registrada: " + usuario.getNombreUsuario() + " compró " + cantidad + " de " + p.getNombreProducto() + " por " + (p.getPrecio() * cantidad));
+    
+        if (stockActual >= cantidad) {
+        int operacion = (stockActual - cantidad);
+        
+        p.setStock(operacion);
+
+        // Registrar la venta
+        System.out.println("Venta registrada: " + usuario.getNombreUsuario() + 
+        " compró " + cantidad + " de " + p.getNombreProducto() + 
+        " por " + (p.getPrecio() * cantidad));
             System.out.println("Stock actualizado de " + p.getNombreProducto() + ": " + p.getStock());
         } else {
             System.out.println("No hay suficiente stock para realizar la venta. Stock actual: " + stockActual);
@@ -86,15 +109,19 @@ public class VentaController {
     public void mostrarVentas() {
         System.out.println("\n=== LISTA DE VENTAS ===");
         if (listaVentas.isEmpty()) {
-            System.out.println(" No hay ventas registradas.");
+            System.out.println("No hay ventas registradas.");
         } else {
             for (Venta v : listaVentas) {
-                System.out.println(v);
+                System.out.println("Usuario: " + v.getUsuario().getNombreUsuario() +
+                        " | Producto: " + v.getProducto().getNombreProducto() +
+                        " | Cantidad: " + v.getCantidad() +
+                        " | Total de la venta: " + v.getMonto());
             }
+            System.out.println("=== Total acumulado en caja: " + saldoVenta + " ===");
         }
     }
 
-     // METODO PARA VER EL HISTORIAL DEL USUARIO
+    // METODO PARA VER EL HISTORIAL DEL USUARIO
     public void mostrarHistorialUsuario(Usuario usuario) {
         System.out.println("\nTus compras:");
         for (Venta venta : listaVentas) {

@@ -106,7 +106,7 @@ public class Main {
                         ventaController.registrarVenta(scanner, usuarioLogueado, productoController, usuarioController);
                         System.out.println("Dinero disponible: " + usuarioLogueado.getSaldo());
                         break;
-                    case "3": ventaController.mostrarHistorialUsuario(usuarioLogueado); break;
+                    case "3": ventaController.mostrarVentas(); break;
                     case "4":
                         System.out.println("Dinero disponible (cliente): " + usuarioLogueado.getSaldo());
                         break;
