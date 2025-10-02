@@ -22,21 +22,32 @@ public class Main {
         Usuario usuarioLogueado = null;
 
         // Códigos ANSI para colores
-        final String RESET = "\u001B[0m";
-        final String CYAN = "\u001B[36m";
-        final String GREEN = "\u001B[32m";
-        final String YELLOW = "\u001B[33m";
-        final String RED = "\u001B[31m";
-        final String PURPLE = "\u001B[35m";
+        final String RESET   = "\u001B[0m";   // reset (volver a normal)
+        final String RED     = "\u001B[31m";  // rojo
+        final String GREEN   = "\u001B[32m";  // verde
+        final String YELLOW  = "\u001B[33m";  // amarillo
+        final String BLUE    = "\u001B[34m";  // azul
+        final String PURPLE  = "\u001B[35m";  // morado
+        final String CYAN    = "\u001B[36m";  // cian
+        final String WHITE   = "\u001B[37m";  // blanco
 
-        System.out.println("\nRecuerde que los usuarios disponibles en la tienda son:" + "\n" + "═══════════ADMIN ||||| CLIENTE ═════");
+                System.out.println(YELLOW + "  ╔═══════════════════════════════════════════════════════════════╗" + RESET);
+                System.out.println(YELLOW + "  ║        BIENVENIDO A LA TIENDA VIRTUAL INTENCIONADAMENTE       ║" + RESET);
+                System.out.println(YELLOW + "  ╚═══════════════════════════════════════════════════════════════╝" + RESET);
 
-        System.out.println("Bienvenido a la tienda virtual IntencionadaMente");
+                System.out.println(WHITE+ "══════ Recuerde que los usuarios disponibles en la tienda son: ═════"+ RESET);
+                System.out.println(CYAN + "  ╔═══════════════════════════════════════════════════════════════╗" + RESET);
+                System.out.println(CYAN + "  ║                   ADMINISTRADOR ║ CLIENTE                     ║" + RESET);
+                System.out.println(CYAN + "  ╚═══════════════════════════════════════════════════════════════╝" + RESET);
         while (true) {
 
             if (usuarioLogueado == null) {
-                System.out.println("\n1. Iniciar sesión\n2. Registrarse\n3. Salir");
-                System.out.print("Seleccione una opción: ");
+                System.out.println(CYAN + "  ╔═══════════════════════════════════════════════════════════════╗" + RESET);
+                System.out.println(CYAN + "  ║        -1. Iniciar sesión                                     ║" + RESET);
+                System.out.println(CYAN + "  ║        -2. Registarse                                         ║" + RESET);
+                System.out.println(CYAN + "  ║        -3. Salir                                              ║" + RESET);
+                System.out.println(CYAN + "  ║        -> Seleccione una opción                               ║" + RESET);
+                System.out.println(CYAN + "  ╚═══════════════════════════════════════════════════════════════╝" + RESET);
                 String opcion = scanner.nextLine();
                 switch (opcion) {
                     case "1":
@@ -55,9 +66,9 @@ public class Main {
             } else if (usuarioLogueado.getRol().equals("ADMIN")) {
 
                 System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);
-                System.out.println(CYAN + "  ║            TIENDA VIRTUAL INTENCIONADAMENTE             ║" + RESET);
+                System.out.println(CYAN + "  ║            TIENDA VIRTUAL INTENCIONADAMENTE   ║" + RESET);
                 System.out.println(CYAN + "  ╚═══════════════════════════════════════════════╝" + RESET);
-                System.out.println(PURPLE + "  ║                 MENU ADMINISTRADOR              ║" + RESET);
+                System.out.println(PURPLE + "  ║               MENU ADMINISTRADOR              ║" + RESET);
                 System.out.println("  ║                                               ║");
                 System.out.println(GREEN + "  ║  -1. Gestionar Usuarios                       ║" + RESET);
                 System.out.println(GREEN + "  ║  -2. Gestionar Productos                      ║" + RESET);

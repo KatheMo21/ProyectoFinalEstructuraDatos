@@ -5,29 +5,38 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProveedorController {
-     private ArrayList<Proveedor> listaProveedores = new ArrayList<>();
+    private ArrayList<Proveedor> listaProveedores = new ArrayList<>();
     private int nextId = 1; // ID autoincremental
 
+    // ====== Códigos ANSI para colores ======
+    final String RESET   = "\u001B[0m";
+    final String RED     = "\u001B[31m";
+    final String GREEN   = "\u001B[32m";
+    final String YELLOW  = "\u001B[33m";
+    final String BLUE    = "\u001B[34m";
+    final String PURPLE  = "\u001B[35m";
+    final String CYAN    = "\u001B[36m";
+    final String WHITE   = "\u001B[37m";
 
-    // MÉTODO REGISTRAR PROVEEDOR
+    // ====== MÉTODO REGISTRAR PROVEEDOR ======
     public Proveedor registrarProveedor(Scanner scanner) {
-        System.out.print("Ingrese nombre del proveedor: ");
+        System.out.print(BLUE + "Nombre del proveedor: " + RESET);
         String nombre = scanner.nextLine().trim();
         if (nombre.isEmpty()) {
-            System.out.println("El nombre no puede estar vacío.");
+            System.out.println(RED + ">>> El nombre no puede estar vacío. <<<" + RESET);
             return null;
         }
 
-        System.out.print("Ingrese contacto: ");
+        System.out.print(BLUE + "Contacto: " + RESET);
         String contacto = scanner.nextLine().trim();
         if (contacto.isEmpty()) {
-            System.out.println("El contacto no puede estar vacío.");
+            System.out.println(RED + ">>> El contacto no puede estar vacío. <<<" + RESET);
             return null;
         }
 
         for (Proveedor p : listaProveedores) {
             if (p.getNombre().equalsIgnoreCase(nombre)) {
-                System.out.println("Ya existe un proveedor con ese nombre.");
+                System.out.println(RED + ">>> Ya existe un proveedor con ese nombre. <<<" + RESET);
                 return null;
             }
         }
@@ -36,12 +45,11 @@ public class ProveedorController {
         Proveedor nuevo = new Proveedor(nextId++, nombre, contacto);
         listaProveedores.add(nuevo);
 
-        System.out.println("Proveedor registrado: " + nuevo);
+        System.out.println(GREEN + "Proveedor registrado correctamente: " + nuevo + RESET);
         return nuevo;
     }
 
-    // MÉTODO BUSCAR PROVEEDOR POR ID
-
+    // ====== MÉTODO BUSCAR PROVEEDOR POR ID ======
     public Proveedor buscarProveedor(int id) {
         for (Proveedor p : listaProveedores) {
             if (p.getId() == id) {
@@ -51,8 +59,7 @@ public class ProveedorController {
         return null;
     }
 
-    // MÉTODO BUSCAR PROVEEDOR POR NOMBRE
-
+    // ====== MÉTODO BUSCAR PROVEEDOR POR NOMBRE ======
     public Proveedor buscarPorNombre(String nombre) {
         for (Proveedor p : listaProveedores) {
             if (p.getNombre().equalsIgnoreCase(nombre)) {
@@ -62,100 +69,100 @@ public class ProveedorController {
         return null;
     }
 
-
-    // MÉTODO PARA LISTAR PROVEEDORES
-
+    // ====== MÉTODO LISTAR PROVEEDORES ======
     public void listarProveedores() {
         if (listaProveedores.isEmpty()) {
-            System.out.println("No hay proveedores registrados.");
+            System.out.println(YELLOW + ">>> No hay proveedores registrados. <<<" + RESET);
             return;
         }
 
-        System.out.printf("%-5s %-20s %-20s%n", "ID", "Nombre", "Contacto");
-        System.out.println("-------------------------------------------------");
+        // Encabezado con estilo tabla
+        System.out.println(BLUE + "+-----+----------------------+----------------------+" + RESET);
+        System.out.printf("| %-3s | %-20s | %-20s |%n", "ID", "Nombre", "Contacto");
+        System.out.println(BLUE + "+-----+----------------------+----------------------+" + RESET);
+
+        // Filas
         for (Proveedor p : listaProveedores) {
-            System.out.printf("%-5d %-20s %-20s%n",
+            System.out.printf("| %-3d | %-20s | %-20s |%n",
                     p.getId(), p.getNombre(), p.getContacto());
         }
+        System.out.println(BLUE + "+-----+----------------------+----------------------+" + RESET);
     }
 
-
-    // MÉTODO PARA EDITAR PROVEEDOR
-
+    // ====== MÉTODO EDITAR PROVEEDOR ======
     public void editarProveedor(Scanner scanner) {
-        System.out.print("Ingrese ID del proveedor a editar: ");
+        System.out.print(BLUE + "Ingrese ID del proveedor a editar: " + RESET);
         int id;
         try {
             id = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("ID inválido. Debe ser un número.");
+            System.out.println(RED + ">>> ID inválido. Debe ser un número. <<<" + RESET);
             return;
         }
 
         Proveedor p = buscarProveedor(id);
         if (p == null) {
-            System.out.println("Proveedor no encontrado.");
+            System.out.println(RED + ">>> Proveedor no encontrado. <<<" + RESET);
             return;
         }
 
-        System.out.print("Nuevo nombre (actual: " + p.getNombre() + "): ");
+        System.out.print(BLUE + "Nuevo nombre (actual: " + p.getNombre() + "): " + RESET);
         String nuevoNombre = scanner.nextLine().trim();
         if (!nuevoNombre.isEmpty()) {
             p.setNombre(nuevoNombre);
         }
 
-        System.out.print("Nuevo contacto (actual: " + p.getContacto() + "): ");
+        System.out.print(BLUE + "Nuevo contacto (actual: " + p.getContacto() + "): " + RESET);
         String nuevoContacto = scanner.nextLine().trim();
         if (!nuevoContacto.isEmpty()) {
             p.setContacto(nuevoContacto);
         }
 
-        System.out.println("Proveedor actualizado.");
+        System.out.println(GREEN + ">>> Proveedor actualizado correctamente. <<<" + RESET);
     }
 
-    
-    // MÉTODO PARA ELIMINAR PROVEEDOR
- 
+    // ====== MÉTODO ELIMINAR PROVEEDOR ======
     public void eliminarProveedor(Scanner scanner) {
-        System.out.print("Ingrese ID del proveedor a eliminar: ");
+        System.out.print(BLUE + "Ingrese ID del proveedor a eliminar: " + RESET);
         int id;
         try {
             id = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("ID inválido. Debe ser un número.");
+            System.out.println(RED + ">>> ID inválido. Debe ser un número. <<<" + RESET);
             return;
         }
 
         Proveedor p = buscarProveedor(id);
         if (p == null) {
-            System.out.println("Proveedor no encontrado.");
+            System.out.println(RED + ">>> Proveedor no encontrado. <<<" + RESET);
             return;
         }
 
         listaProveedores.remove(p);
-        System.out.println("Proveedor eliminado correctamente.");
+        System.out.println(GREEN + ">>> Proveedor eliminado correctamente. <<<" + RESET);
     }
 
-   
-    //  lISTA DE PROVEEDORES
-
+    // ====== GETTERS ======
     public ArrayList<Proveedor> getListaProveedores() {
         return listaProveedores;
     }
 
-
-    // MENÚ CRUD PROVEEDORES
-
+    // ====== MENÚ CRUD PROVEEDORES ======
     public void menuCrudProveedores(Scanner scanner) {
         while (true) {
-            System.out.println("\n--- MENU PROVEEDORES ---");
-            System.out.println("1) Listar proveedores");
-            System.out.println("2) Registrar proveedor");
-            System.out.println("3) Editar proveedor");
-            System.out.println("4) Eliminar proveedor");
-            System.out.println("5) Buscar proveedor por nombre");
-            System.out.println("6) Volver");
-            System.out.print("Opción: ");
+            System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);
+            System.out.println(PURPLE + "  ║              CRUD DE PROVEEDORES              ║" + RESET);
+            System.out.println("  ║                                               ║");
+            System.out.println(GREEN + "  ║  -1. Listar proveedores                       ║" + RESET);
+            System.out.println(GREEN + "  ║  -2. Registrar proveedor                      ║" + RESET);
+            System.out.println(GREEN + "  ║  -3. Editar proveedor                         ║" + RESET);
+            System.out.println(GREEN + "  ║  -4. Eliminar proveedor                       ║" + RESET);
+            System.out.println(GREEN + "  ║  -5. Buscar proveedor por nombre              ║" + RESET);
+            System.out.println(GREEN + "  ║  -6. Volver                                   ║" + RESET);
+            System.out.println("  ║                                               ║");
+            System.out.println(PURPLE + "  ║  -> Seleccione una opción:                    ║" + RESET);
+            System.out.println(CYAN + "  ╚═══════════════════════════════════════════════╝" + RESET);
+
             String opcion = scanner.nextLine();
 
             switch (opcion) {
@@ -172,19 +179,19 @@ public class ProveedorController {
                     eliminarProveedor(scanner);
                     break;
                 case "5":
-                    System.out.print("Ingrese nombre del proveedor a buscar: ");
+                    System.out.print(BLUE + "Ingrese nombre del proveedor a buscar: " + RESET);
                     String nombre = scanner.nextLine();
                     Proveedor encontrado = buscarPorNombre(nombre);
                     if (encontrado != null) {
-                        System.out.println("Proveedor encontrado: " + encontrado);
+                        System.out.println(GREEN + "Proveedor encontrado: " + encontrado + RESET);
                     } else {
-                        System.out.println("No se encontró un proveedor con ese nombre.");
+                        System.out.println(RED + ">>> No se encontró un proveedor con ese nombre. <<<" + RESET);
                     }
                     break;
                 case "6":
                     return;
                 default:
-                    System.out.println("Opción inválida.");
+                    System.out.println(RED + ">>> Opción inválida. <<<" + RESET);
             }
         }
     }
