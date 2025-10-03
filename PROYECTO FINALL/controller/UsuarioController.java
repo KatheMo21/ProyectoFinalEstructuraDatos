@@ -200,64 +200,78 @@ public void registrarNuevoUsuario(Scanner scanner) {
     ///////// cadena. es ideal usarlo para asegurarnos que no se ingresen
     /// nombres vacíos o con espacios.
     public void actualizarUsuario(Scanner scanner) {
-        System.out.print(BLUE+ "Nombre de usuario a editar: " + RESET);
+        System.out.print(BLUE + "Nombre de usuario a editar: " + RESET);
         String nombre = scanner.nextLine();
         if (nombre.trim().isEmpty()) {
             System.out.println(">>> El nombre no puede estar vacío. <<<");
             return;
         }
-        Usuario u = buscarUsuario(nombre);
-        if (u == null) {
-            System.out.println(">>> Usuario no encontrado. Verifica el nombre ingresado.<<<");
-            return;
-        }
-
-        System.out.print(BLUE+ "Nuevo nombre (actual: " + u.getNombreUsuario() + "): "+ RESET);
-        String nuevoNombre = scanner.nextLine();
-        if (!nuevoNombre.isEmpty()) {
-            u.setNombreUsuario(nuevoNombre);
-        }  else {
-                System.out.println(">>> El nombre no puede estar vacío. <<<");
-                return;
-            }
-
-        System.out.print(BLUE +"Nueva contraseña: " +RESET);
-        String nuevaContrasena = scanner.nextLine();
-        if (!nuevaContrasena.isEmpty()) {
-            u.setContrasena(nuevaContrasena);
-        } else {
-                System.out.println(">>> La contraseña no cumple los requisitos. <<<");
-            }
-
-        System.out.print(BLUE +"Nuevo rol (ADMIN/CLIENTE): "+ RESET);
-        String nuevoRol = scanner.nextLine().toUpperCase();
-        if (nuevoRol.equals("ADMIN") || nuevoRol.equals("CLIENTE")) {
-            u.setRol(nuevoRol);
-        } else if (!nuevoRol.isEmpty()) {
-            System.out.println(">>> Rol inválido. Debe ser ADMIN o CLIENTE.<<< " );
-        }
-        System.out.println("Usuario" + u.getNombreUsuario() + " ha sido actualizado correctamente.");
-        
-    }
-
-    ////////// METODO PARA ELIMINAR USUARIO //////////
-    ///
-    public void eliminarUsuario(Scanner scanner) {
-        System.out.print(BLUE +"Nombre de usuario a eliminar: " + RESET);
-        String nombre = scanner.nextLine();
-        if (nombre.trim().isEmpty()) {
-            System.out.println(">>> El nombre no puede estar vacío. <<<");
-            return;
-        }
+    
         Usuario u = buscarUsuario(nombre);
         if (u == null) {
             System.out.println(">>> Usuario no encontrado. Verifica el nombre ingresado. <<<");
             return;
         }
+    
+        // Lo removemos del TreeSet antes de modificarlo
         listaUsuarios.remove(u);
-        System.out.println("Usuario" + u.getNombreUsuario() + " ha sido eliminado correctamente" );
+    
+        System.out.print(BLUE + "Nuevo nombre (actual: " + u.getNombreUsuario() + "): " + RESET);
+        String nuevoNombre = scanner.nextLine();
+        if (!nuevoNombre.isEmpty()) {
+            u.setNombreUsuario(nuevoNombre);
+        } else {
+            System.out.println(">>> El nombre no puede estar vacío. <<<");
+            // volvemos a meterlo para no perder el usuario
+            listaUsuarios.add(u);
+            return;
+        }
+    
+        System.out.print(BLUE + "Nueva contraseña: " + RESET);
+        String nuevaContrasena = scanner.nextLine();
+        if (!nuevaContrasena.isEmpty()) {
+            if (validarClave(nuevaContrasena)) {
+                u.setContrasena(nuevaContrasena);
+            } else {
+                System.out.println(">>> La contraseña no cumple los requisitos. <<<");
+            }
+        }
+    
+        System.out.print(BLUE + "Nuevo rol (ADMIN/CLIENTE): " + RESET);
+        String nuevoRol = scanner.nextLine().toUpperCase();
+        if (nuevoRol.equals("ADMIN") || nuevoRol.equals("CLIENTE")) {
+            u.setRol(nuevoRol);
+        } else if (!nuevoRol.isEmpty()) {
+            System.out.println(">>> Rol inválido. Debe ser ADMIN o CLIENTE. <<<");
+        }
+    
+        // Lo volvemos a insertar ya con los cambios
+        listaUsuarios.add(u);
+    
+        System.out.println("Usuario " + u.getNombreUsuario() + " ha sido actualizado correctamente.");
     }
+    
 
+    ////////// METODO PARA ELIMINAR USUARIO //////////
+    ///
+    public void eliminarUsuario(Scanner scanner) {
+        System.out.print(BLUE + "Nombre de usuario a eliminar: " + RESET);
+        String nombre = scanner.nextLine();
+        if (nombre.trim().isEmpty()) {
+            System.out.println(">>> El nombre no puede estar vacío. <<<");
+            return;
+        }
+    
+        Usuario u = buscarUsuario(nombre);
+        if (u == null) {
+            System.out.println(">>> Usuario no encontrado. Verifica el nombre ingresado. <<<");
+            return;
+        }
+    
+        // Aquí sí funciona normal porque se usa el comparador
+        listaUsuarios.remove(u);
+        System.out.println("Usuario " + u.getNombreUsuario() + " ha sido eliminado correctamente.");
+    }
     //////////// MENU CRUD USUARIOS ////////////
     public void menuCrudUsuarios(Scanner scanner) {
         while (true) {

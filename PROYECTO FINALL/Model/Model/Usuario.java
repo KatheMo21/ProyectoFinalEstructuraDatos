@@ -1,6 +1,6 @@
 package Model;
 
-public class Usuario {
+public class Usuario implements Comparable<Usuario> {
     private String nombreUsuario;
     private String contrasena;
     private String rol;
@@ -56,6 +56,23 @@ public class Usuario {
     public String toString() {
         return "Usuario: " + nombreUsuario + ", Saldo: $" + saldo;
     }
+    @Override
+    public int compareTo(Usuario otro) {
+        // Ordenar usuarios por nombre, ignorando mayúsculas/minúsculas
+        return this.nombreUsuario.compareToIgnoreCase(otro.nombreUsuario);
+    }
 
-    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return nombreUsuario.equalsIgnoreCase(usuario.nombreUsuario);
+    }
+
+    @Override
+    public int hashCode() {
+        return nombreUsuario.toLowerCase().hashCode();
+    }
+  
 }
