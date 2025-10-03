@@ -180,19 +180,22 @@ public void registrarNuevoUsuario(Scanner scanner) {
         System.out.println(">>> Rol inválido. Debe ser ADMIN o CLIENTE <<<");
         return;
     }
-
+    
+    double saldo = -1;
+    while(saldo < 0){
     System.out.print(BLUE + "Saldo inicial: " + RESET);
-    double saldo = 0.0;
+    
     try {
         saldo = Double.parseDouble(scanner.nextLine());
         if (saldo < 0) {
-            System.out.println(" >>> El saldo inicial no puede ser negativo. <<<");
-            return;
+            System.out.println(RED +" >>> El saldo inicial no puede ser negativo. <<<");
+            
         }
     } catch (NumberFormatException e) {
-        System.out.println(">>> Saldo inválido. Se asigna 0 por defecto. <<<");
+        System.out.println(RED +">>> El saldo debe ser númerico. <<<");
+        saldo = -1;
     }
-
+    }
     Usuario nuevoUsuario = new Usuario(nombre, contrasena, rol);
     nuevoUsuario.setSaldo(saldo);
     listaUsuarios.add(nuevoUsuario);
