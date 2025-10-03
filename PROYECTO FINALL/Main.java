@@ -7,21 +7,34 @@ import controller.VentaController;
 import java.util.Scanner;
 
 public class Main {
-
+/**
+ * Clase principal que ejecuta el sistema de la Tienda Virtual.
+ * 
+ * Este sistema permite la gestión de usuarios, productos, proveedores y ventas
+ * a través de un menú interactivo en consola. Los usuarios pueden iniciar sesión
+ * como Administrador o Cliente y acceder a las funcionalidades según su rol.
+  * @author 
+* Katherin Yesenia Monroy Echeverry  
+ * Mariana Salgado Lopez
+ * Jaime Andres Rodriguez
+ * @version 1.0
+ */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+          // Controladores principales
         ProveedorController proveedorController = new ProveedorController();
         ProductoController productoController = new ProductoController(proveedorController);
         UsuarioController usuarioController = new UsuarioController();
         VentaController ventaController = new VentaController();
 
-        //usuarioController.crearUsuarioAdmin_Cliente();
+        // Precarga de productos en el sistema
         productoController.subirProductos();
 
+         // Usuario actual que se loguea en el sistema
         Usuario usuarioLogueado = null;
 
-        // Códigos ANSI para colores
+         // Códigos ANSI para colores
         final String RESET   = "\u001B[0m";   // reset (volver a normal)
         final String RED     = "\u001B[31m";  // rojo
         final String GREEN   = "\u001B[32m";  // verde
@@ -39,8 +52,11 @@ public class Main {
                 System.out.println(CYAN + "  ╔═══════════════════════════════════════════════════════════════╗" + RESET);
                 System.out.println(CYAN + "  ║                   ADMINISTRADOR ║ CLIENTE                     ║" + RESET);
                 System.out.println(CYAN + "  ╚═══════════════════════════════════════════════════════════════╝" + RESET);
+
+         // Bucle principal
         while (true) {
 
+            // Si no hay usuario logueado, se muestran las opciones de acceso
             if (usuarioLogueado == null) {
                 System.out.println(CYAN + "  ╔═══════════════════════════════════════════════════════════════╗" + RESET);
                 System.out.println(CYAN + "  ║        -1. Iniciar sesión                                     ║" + RESET);
@@ -63,6 +79,7 @@ public class Main {
                     default:
                         System.out.println("Opción inválida.");
                 }
+              // Menú de Administrador
             } else if (usuarioLogueado.getRol().equals("ADMIN")) {
 
                 System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);
@@ -105,6 +122,7 @@ public class Main {
                     default:
                         System.out.println("Opción inválida.");
                 }
+                // Menú de Cliente
             } else {
                 System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);
                 System.out.println(CYAN + "  ║        TIENDA VIRTUAL INTENCIONADAMENTE       ║" + RESET);

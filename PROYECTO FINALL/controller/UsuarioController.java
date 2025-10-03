@@ -5,12 +5,25 @@ import java.util.Comparator;
 import java.util.Scanner;
 import java.util.TreeSet;
 
+/**
+ * Controlador para la gestión de usuarios dentro del sistema.
+ * Comprende operaciones CRUD (Crear, Leer, Actualizar, Eliminar),
+ * así como validaciones de seguridad en las contraseñas e inicio de sesión.
+ *
+ * @author  
+ * Katherin Yesenia Monroy Echeverry  
+ * Mariana Salgado Lopez
+ * Jaime Andres Rodriguez
+ */
 public class UsuarioController {
-
-    // TreeSet con comparador para evitar duplicados
+  /**
+     * Estructura de datos que almacena los usuarios registrados.
+     * Se utiliza un {@link TreeSet} con comparador para evitar duplicados,
+     * ordenando por nombre de usuario.
+     */
     private TreeSet<Usuario> listaUsuarios = new TreeSet<>(Comparator.comparing(Usuario::getNombreUsuario));
 
-     // Códigos ANSI para colores
+         // ====== Códigos ANSI para colores ======
         final String RESET   = "\u001B[0m";   // reset (volver a normal)
         final String RED     = "\u001B[31m";  // rojo
         final String GREEN   = "\u001B[32m";  // verde
@@ -20,8 +33,13 @@ public class UsuarioController {
         final String CYAN    = "\u001B[36m";  // cian
         final String WHITE   = "\u001B[37m";  // blanco
 
-    
-    // METODO PARA INICIAR SESION
+
+    /**
+     * Permite que un usuario inicie sesión validando su nombre de usuario y contraseña.
+     *
+     * @param scanner Objeto de entrada para leer datos del usuario.
+     * @return El {@link Usuario} autenticado, o {@code null} si no se encuentra o la contraseña es incorrecta.
+     */
     public Usuario iniciarSesion(Scanner scanner) {
         try {
             if (listaUsuarios.isEmpty()) {
@@ -47,8 +65,12 @@ public class UsuarioController {
         }
         return null;
     }
-
-    /////////////// METODO PARA BUSCAR USUARIO //////////
+  /**
+     * Busca un usuario existente por su nombre de usuario.
+     *
+     * @param nombre Nombre del usuario a buscar.
+     * @return Objeto {@link Usuario} encontrado o {@code null} si no existe.
+     */
     public Usuario buscarUsuario(String nombre) {
         for (Usuario u : listaUsuarios) {
             if (u.getNombreUsuario().equals(nombre)) {
@@ -57,8 +79,11 @@ public class UsuarioController {
         }
         return null;
     }
-
-    ////////// METODO PARA BUSCAR ADMINISTRADOR //////////
+  /**
+     * Busca un usuario con rol de administrador dentro del sistema.
+     *
+     * @return El {@link Usuario} con rol ADMIN, o {@code null} si no existe.
+     */
     public Usuario buscarAdministrador() {
         for (Usuario u : listaUsuarios) {
             if (u.getRol().equalsIgnoreCase("ADMIN")) {
@@ -67,8 +92,12 @@ public class UsuarioController {
         }
         return null; 
     }
-
-    /////////// METODO PARA VALIDAR LA CONTRASEÑA ////////////
+ /**
+     * Registra un nuevo usuario en el sistema.
+     * Comprende validación de nombre único, verificación de contraseña y asignación de rol.
+     *
+     * @param scanner Objeto de entrada para leer datos del usuario.
+     */
     public boolean validarClave(String contraseña) {
         if (contraseña == null || contraseña.length() < 8) {
             return false;
@@ -105,7 +134,11 @@ public class UsuarioController {
 
     }
 
-   /// METODO PARA REGISTRAR UN NUEVO USUARIO
+
+    /**
+     * Muestra la lista de usuarios existentes en el sistema.
+     * Presenta los datos en formato de tabla.
+     */
 public void registrarNuevoUsuario(Scanner scanner) {
 
     System.out.print(BLUE + "Nombre de usuario: " + RESET);
@@ -168,7 +201,11 @@ public void registrarNuevoUsuario(Scanner scanner) {
 }
 
 
-    // METODO PARA MOSTRAR USUARIOS EXISTENTES
+ /**
+     * Permite actualizar la información de un usuario (nombre, contraseña o rol).
+     *
+     * @param scanner Objeto de entrada para leer datos del usuario.
+     */
     public void mostrarUsuarios() {
         if (listaUsuarios.isEmpty()) {
             System.out.println(">>> No hay usuarios registrados en el sistema.<<<");
@@ -194,8 +231,11 @@ public void registrarNuevoUsuario(Scanner scanner) {
 
 
         }
-
-    ///////// METODO PARA ACTUALIZAR USUARIO //////////
+    /**
+     * Elimina un usuario del sistema a partir de su nombre de usuario.
+     *
+     * @param scanner Objeto de entrada para leer datos del usuario.
+     */
     /// El método .trim() elimina los espacios en blanco al inicio y al final de la
     ///////// cadena. es ideal usarlo para asegurarnos que no se ingresen
     /// nombres vacíos o con espacios.
@@ -252,8 +292,12 @@ public void registrarNuevoUsuario(Scanner scanner) {
     }
     
 
-    ////////// METODO PARA ELIMINAR USUARIO //////////
-    ///
+  /**
+     * Despliega un menú interactivo para la gestión CRUD de usuarios.
+     * Comprende: listar, crear, editar y eliminar usuarios.
+     *
+     * @param scanner Objeto de entrada para leer opciones del usuario.
+     */
     public void eliminarUsuario(Scanner scanner) {
         System.out.print(BLUE + "Nombre de usuario a eliminar: " + RESET);
         String nombre = scanner.nextLine();

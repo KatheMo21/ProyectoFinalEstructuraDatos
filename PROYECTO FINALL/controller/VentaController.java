@@ -7,12 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Controlador encargado de gestionar el proceso de ventas dentro del sistema.
+ * 
+ * Comprende:
+ * - Registro de ventas.
+ * - Consulta de historial de ventas.
+ * - Visualización de ventas por producto y por usuario.
+ * - Administración del saldo acumulado en caja.
+ * 
+ * @author 
+ * Katherin Yesenia Monroy Echeverry  
+ * Mariana Salgado Lopez
+ * Jaime Andres Rodriguez
+ */
 public class VentaController {
 
+    /** Lista de ventas realizadas en el sistema */
     private List<Venta> listaVentas;
+
+    
+    /** Saldo acumulado de todas las ventas */
     private double saldoVenta;
 
-    // Códigos ANSI
+
+    // Códigos ANSI para colorear la salida en consola
     final String RESET   = "\u001B[0m";
     final String RED     = "\u001B[31m";
     final String GREEN   = "\u001B[32m";
@@ -22,20 +41,48 @@ public class VentaController {
     final String CYAN    = "\u001B[36m";
     final String WHITE   = "\u001B[37m";
 
+      /**
+     * Obtiene el saldo total de ventas acumulado.
+     * 
+     * @return saldoVenta valor total acumulado en caja.
+     */
     public double getSaldoVenta() {
         return saldoVenta;
     }
 
+    /**
+     * Retorna la lista de ventas registradas.
+     * 
+     * @return listaVentas lista de objetos {@link Venta}.
+     */
     public List<Venta> getListaVentas() {
         return listaVentas;
     }
-
+    
+    /**
+     * Constructor por defecto que inicializa la lista de ventas y el saldo en 0.
+     */
     public VentaController() {
         this.listaVentas = new ArrayList<>();
         this.saldoVenta = 0.0;
     }
 
-    //////////////////// REGISTRAR VENTA ////////////////////
+
+    /**
+     * Registra una nueva venta en el sistema.
+     * 
+     * Comprende:
+     * - Validación de ID de producto.
+     * - Verificación de stock disponible.
+     * - Validación de saldo del usuario.
+     * - Actualización de saldo de usuario y administrador.
+     * - Disminución de stock del producto.
+     * 
+     * @param scanner              objeto para lectura de datos desde consola.
+     * @param usuario              usuario que realiza la compra.
+     * @param productoController   controlador para gestionar los productos.
+     * @param usuarioController    controlador para gestionar usuarios (incluye administrador).
+     */
     public void registrarVenta(Scanner scanner, Usuario usuario, 
                                ProductoController productoController,
                                UsuarioController usuarioController) {
@@ -94,7 +141,10 @@ public class VentaController {
         System.out.println( ">>> Compra realizada con éxito. <<<" );
     }
 
-    //////////////////// MOSTRAR VENTAS ////////////////////
+    /**
+     * Muestra todas las ventas registradas en formato de tabla.
+     * Si no existen ventas, muestra un mensaje de advertencia.
+     */
     public void mostrarVentas() {
         if (listaVentas.isEmpty()) {
             System.out.println(">>> No hay ventas registradas. <<<");
@@ -118,7 +168,11 @@ public class VentaController {
         System.out.println(YELLOW + "Total acumulado en caja: $" + saldoVenta + RESET);
     }
 
-    //////////////////// MOSTRAR HISTORIAL POR USUARIO ////////////////////
+    /**
+     * Muestra el historial de compras de un usuario específico.
+     * 
+     * @param usuario usuario del cual se quiere consultar su historial de compras.
+     */
     public void mostrarHistorialUsuario(Usuario usuario) {
         System.out.println(PURPLE + "\nHistorial de compras de " + usuario.getNombreUsuario() + ":" + RESET);
 
@@ -137,7 +191,10 @@ public class VentaController {
         }
     }
 
-    //////////////////// HISTORIAL COMPLETO ////////////////////
+  /**
+     * Muestra el historial completo de ventas del sistema.
+     * Comprende todas las ventas realizadas a lo largo del uso del sistema.
+     */
     public void historialVentas() {
         System.out.println(PURPLE + "\nHISTORIAL COMPLETO DE VENTAS:" + RESET);
         mostrarVentas();
@@ -184,7 +241,11 @@ public class VentaController {
         }
     }
 
-    //////////////////// VENTAS POR PRODUCTO ////////////////////
+     /**
+     * Muestra todas las ventas asociadas a un producto en específico.
+     * 
+     * @param nombreProducto nombre del producto a buscar.
+     */
     public void mostrarVentasPorProducto(String nombreProducto) {
         boolean encontrado = false;
 

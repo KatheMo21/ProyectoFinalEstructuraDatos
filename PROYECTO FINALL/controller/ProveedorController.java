@@ -4,11 +4,29 @@ import Model.Proveedor;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Controlador encargado de gestionar las operaciones CRUD (Crear, Leer, 
+ * Actualizar y Eliminar) de los proveedores en el sistema.
+ *
+ * Permite registrar, listar, buscar, editar y eliminar proveedores.
+ * Además, incluye un menú interactivo para la administración.
+ * 
+ *
+ * @author 
+ * Katherin Yesenia Monroy Echeverry  
+ * Mariana Salgado Lopez
+ * Jaime Andres Rodriguez 
+ * @version 1.0
+ */
 public class ProveedorController {
+
+    /** Lista que almacena todos los proveedores registrados. */
     private ArrayList<Proveedor> listaProveedores = new ArrayList<>();
+
+    /** Contador autoincremental para asignar ID único a cada proveedor. */
     private int nextId = 1; // ID autoincremental
 
-    // ====== Códigos ANSI para colores ======
+ // ====== Códigos ANSI para colores en consola ======
     final String RESET   = "\u001B[0m";
     final String RED     = "\u001B[31m";
     final String GREEN   = "\u001B[32m";
@@ -18,7 +36,13 @@ public class ProveedorController {
     final String CYAN    = "\u001B[36m";
     final String WHITE   = "\u001B[37m";
 
-    // ====== MÉTODO REGISTRAR PROVEEDOR ======
+   /**
+     * Registra un nuevo proveedor en el sistema.
+     *
+     * @param scanner Scanner para capturar la entrada del usuario
+     * @return el proveedor creado si el registro fue exitoso, 
+     *         o {@code null} si hubo algún error (nombre/contacto vacío o repetido).
+     */
     public Proveedor registrarProveedor(Scanner scanner) {
         System.out.print(BLUE + "Nombre del proveedor: " + RESET);
         String nombre = scanner.nextLine().trim();
@@ -49,7 +73,12 @@ public class ProveedorController {
         return nuevo;
     }
 
-    // ====== MÉTODO BUSCAR PROVEEDOR POR ID ======
+/**
+     * Busca un proveedor en la lista por su ID.
+     *
+     * @param id identificador del proveedor
+     * @return el proveedor encontrado o {@code null} si no existe
+     */
     public Proveedor buscarProveedor(int id) {
         for (Proveedor p : listaProveedores) {
             if (p.getId() == id) {
@@ -59,7 +88,12 @@ public class ProveedorController {
         return null;
     }
 
-    // ====== MÉTODO BUSCAR PROVEEDOR POR NOMBRE ======
+      /**
+     * Busca un proveedor en la lista por su nombre.
+     *
+     * @param nombre nombre del proveedor a buscar
+     * @return el proveedor encontrado o {@code null} si no existe
+     */
     public Proveedor buscarPorNombre(String nombre) {
         for (Proveedor p : listaProveedores) {
             if (p.getNombre().equalsIgnoreCase(nombre)) {
@@ -68,8 +102,10 @@ public class ProveedorController {
         }
         return null;
     }
-
-    // ====== MÉTODO LISTAR PROVEEDORES ======
+   /**
+     * Muestra en consola todos los proveedores registrados en formato tabla.
+     * Si no existen proveedores, se muestra un mensaje de advertencia.
+     */
     public void listarProveedores() {
         if (listaProveedores.isEmpty()) {
             System.out.println(YELLOW + ">>> No hay proveedores registrados. <<<" + RESET);
@@ -89,7 +125,12 @@ public class ProveedorController {
         System.out.println(BLUE + "+-----+----------------------+----------------------+" + RESET);
     }
 
-    // ====== MÉTODO EDITAR PROVEEDOR ======
+      /**
+     * Permite editar los datos de un proveedor existente.
+     * El usuario debe ingresar el ID del proveedor y luego los nuevos valores.
+     *
+     * @param scanner Scanner para capturar la entrada del usuario
+     */
     public void editarProveedor(Scanner scanner) {
         System.out.print(BLUE + "Ingrese ID del proveedor a editar: " + RESET);
         int id;
@@ -121,7 +162,11 @@ public class ProveedorController {
         System.out.println(GREEN + ">>> Proveedor actualizado correctamente. <<<" + RESET);
     }
 
-    // ====== MÉTODO ELIMINAR PROVEEDOR ======
+      /**
+     * Elimina un proveedor del sistema a partir de su ID.
+     *
+     * @param scanner Scanner para capturar la entrada del usuario
+     */
     public void eliminarProveedor(Scanner scanner) {
         System.out.print(BLUE + "Ingrese ID del proveedor a eliminar: " + RESET);
         int id;
@@ -142,12 +187,21 @@ public class ProveedorController {
         System.out.println(GREEN + ">>> Proveedor eliminado correctamente. <<<" + RESET);
     }
 
-    // ====== GETTERS ======
+/**
+     * Devuelve la lista de todos los proveedores registrados.
+     *
+     * @return lista de proveedores
+     */
     public ArrayList<Proveedor> getListaProveedores() {
         return listaProveedores;
     }
 
-    // ====== MENÚ CRUD PROVEEDORES ======
+     /**
+     * Muestra el menú CRUD de proveedores en consola y permite al usuario
+     * interactuar para listar, registrar, editar, eliminar o buscar proveedores.
+     *
+     * @param scanner Scanner para capturar la entrada del usuario
+     */
     public void menuCrudProveedores(Scanner scanner) {
         while (true) {
             System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);

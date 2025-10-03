@@ -5,17 +5,38 @@ import Model.Proveedor;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class ProductoController {
+/**
+ * Controlador encargado de gestionar las operaciones CRUD de los productos.
+ * permite
+ *   Subir productos predefinidos.
+ *   Crear nuevos productos.
+ *   Listar productos en forma de tabla
+ *   Editar productos existentes.
+ *   Eliminar productos del sistema.
+ *   Administrar el menú de gestión (CRUD) de productos.
+ *
+ * @author
+ * Katherin Yesenia Monroy Echeverry  
+ * Mariana Salgado Lopez
+ * Jaime Andres Rodriguez
+ * @version 1.0
+ */
 
+public class ProductoController {
+    
+    /** Lista enlazada de productos registrados en el sistema. */
     private LinkedList<Producto> listaProductos = new LinkedList<>();
+
+     /** Identificador incremental para asignar IDs automáticos a los productos creados. */
     private int nextId = 1;
 
+      /** Controlador de proveedores asociado. */
     private ProveedorController proveedorController;
 
-    // Proveedor inicial para productos por defecto
+    /** Proveedor por defecto utilizado para productos iniciales. */
     Proveedor proveedorOne = new Proveedor(1, "World Meditation", "18768463846");
 
-    // ===== Colores ANSI =====
+    // ===== Colores ANSI para dar formato a la consola =====
     final String RESET   = "\u001B[0m";   // reset
     final String RED     = "\u001B[31m";  // rojo
     final String GREEN   = "\u001B[32m";  // verde
@@ -29,7 +50,12 @@ public class ProductoController {
         this.proveedorController = proveedorController;
     }
 
-    // ====== SUBIR PRODUCTOS PREDEFINIDOS ======
+    
+    /**
+     * Constructor de la clase ProductoController.
+     * 
+     * @param proveedorController instancia del controlador de proveedores.
+     */
     public void subirProductos() {
         listaProductos.add(new Producto(1, "Jardín meditación", 128000, 10,
                 "Base en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", proveedorOne));
@@ -41,7 +67,9 @@ public class ProductoController {
                 "Simboliza purificación, calma y conexión interior.", proveedorOne));
     }
 
-    // ===== LISTAR PRODUCTOS (EN TABLA) =====
+    /**
+     * Carga un conjunto de productos predefinidos en la lista de productos.
+     */
     public void listarProductos() {
         if (listaProductos.isEmpty()) {
             System.out.println(">>> No hay productos registrados. <<<");
@@ -66,7 +94,12 @@ public class ProductoController {
         System.out.println(CYAN + "+----+----------------------+------------+--------+-----------------------------+-------------------+" + RESET);
     }
 
-    // ===== CREAR PRODUCTO =====
+      /**
+     * Crea un nuevo producto a partir de la entrada del usuario.
+     * 
+     * @param scanner objeto Scanner para leer entradas desde consola.
+     * @param proveedorController controlador de proveedores para asociar un proveedor al producto.
+     */
     public void crearProductos(Scanner scanner, ProveedorController proveedorController) {
         int id = nextId++;
 
@@ -113,7 +146,12 @@ public class ProductoController {
         System.out.println(">>> El producto '" + nombre + "' ha sido creado exitosamente. <<<");
     }
 
-    // ===== BUSCAR PRODUCTOS =====
+  /**
+     * Busca un producto por su ID.
+     * 
+     * @param id identificador único del producto.
+     * @return el producto si existe, de lo contrario {@code null}.
+     */
     public Producto buscarProductos(int id) {
         for (Producto p : listaProductos) {
             if (p.getId() == id) return p;
@@ -121,14 +159,23 @@ public class ProductoController {
         return null;
     }
 
+    /**
+     * Busca un producto por su nombre.
+     * 
+     * @param nombre nombre del producto a buscar.
+     * @return el producto si existe, de lo contrario {@code null}.
+     */
     public Producto buscarProductoPorNombre(String nombre) {
         for (Producto p : listaProductos) {
             if (p.getNombreProducto().equalsIgnoreCase(nombre)) return p;
         }
         return null;
     }
-
-    // ===== EDITAR PRODUCTO =====
+   /**
+     * Permite editar los datos de un producto existente.
+     * 
+     * @param scanner objeto Scanner para capturar la entrada del usuario.
+     */
     public void editarProductos(Scanner scanner) {
         System.out.print(BLUE + "ID del producto a editar: " + RESET);
         int id;
@@ -176,8 +223,11 @@ public class ProductoController {
 
         System.out.println(">>> Producto actualizado correctamente. <<<");
     }
-
-    // ===== ELIMINAR PRODUCTO =====
+    /**
+     * Elimina un producto de la lista.
+     * 
+     * @param scanner objeto Scanner para capturar la entrada del usuario.
+     */
     public void eliminarProductos(Scanner scanner) {
         System.out.print(BLUE + "ID del producto a eliminar: " + RESET);
         int id;
@@ -195,8 +245,11 @@ public class ProductoController {
         listaProductos.remove(p);
         System.out.println(">>> Producto eliminado exitosamente. <<<");
     }
-
-    // ===== MENÚ CRUD PRODUCTOS =====
+   /**
+     * Menú interactivo que permite gestionar las operaciones CRUD de los productos.
+     * 
+     * @param scanner objeto Scanner para leer entradas desde consola.
+     */
     public void menuCrudProductos(Scanner scanner) {
         while (true) {
             System.out.println(CYAN + "  ╔═══════════════════════════════════════════════╗" + RESET);
