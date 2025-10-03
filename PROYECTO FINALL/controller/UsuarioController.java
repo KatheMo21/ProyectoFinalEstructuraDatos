@@ -105,55 +105,68 @@ public class UsuarioController {
 
     }
 
-    /// METODO PARA REGISTRAR UN NUEVO USUARIO
-    public void registrarNuevoUsuario(Scanner scanner) {
-        
-        System.out.print(BLUE+"Nombre de usuario: "+ RESET);
-        String nombre = scanner.nextLine();
-        if (buscarUsuario(nombre) != null) {
-            System.out.println(">>> El usuario ya existe. No se puede registrar. <<<");
-            return;
-        }
+   /// METODO PARA REGISTRAR UN NUEVO USUARIO
+public void registrarNuevoUsuario(Scanner scanner) {
 
-        System.out.print(">>> La contraseña debe tener almenos 8 carateres,un caracter especial, un numero y una letra Mayuscula <<<  \n");
-       
-        System.out.print(BLUE+ "Contraseña: " + RESET); 
-        String contrasena = scanner.nextLine();
+    System.out.print(BLUE + "Nombre de usuario: " + RESET);
+    String nombre = scanner.nextLine();
+    if (buscarUsuario(nombre) != null) {
+        System.out.println(">>> El usuario ya existe. No se puede registrar. <<<");
+        return;
+    }
+
+    System.out.println(">>> La contraseña debe tener al menos 8 caracteres, un caracter especial, un número y una letra Mayúscula <<<");
+
+    String contrasena;
+    while (true) {  // Bucle hasta que la clave sea válida
+        System.out.print(BLUE + "Contraseña: " + RESET);
+        contrasena = scanner.nextLine();
 
         if (!validarClave(contrasena)) {
-            System.out.println(">>> La contraseña no cumple los requisitos. <<<");
-            return;
-        }
-        for (Usuario u : listaUsuarios) {
-            if (u.getContrasena().equals(contrasena)) {
-                System.out.println(">>> La contraseña ya existe. <<<");
-                return;
+            System.out.println(RED + ">>> La contraseña no cumple los requisitos. Intente nuevamente. <<<" + RESET);
+        } else {
+            // Verificar si ya existe esa contraseña
+            boolean existeClave = false;
+            for (Usuario u : listaUsuarios) {
+                if (u.getContrasena().equals(contrasena)) {
+                    existeClave = true;
+                    break;
+                }
+            }
+            if (existeClave) {
+                System.out.println(RED + ">>> La contraseña ya existe. Intente con otra. <<<" + RESET);
+            } else {
+                break; // clave válida y única → salir del bucle
             }
         }
-
-        System.out.print(BLUE +"Elija el Rol (ADMIN/CLIENTE): " + RESET);
-        String rol = scanner.nextLine().toUpperCase();
-        if (!rol.equals("ADMIN") && !rol.equals("CLIENTE")) {
-            System.out.println(">>> Rol inválido. Debe ser ADMIN o CLIENTE <<<");
-            return;
-        }
-        System.out.print(BLUE+ "Saldo inicial: " + RESET);
-        double saldo = 0.0;
-        try {
-            saldo = Double.parseDouble(scanner.nextLine());
-            if (saldo < 0) {
-                System.out.println(" >>> El saldo inicial no puede ser negativo. <<<");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println(">>> Saldo inválido. Se asigna 0 por defecto. <<<");
-        }
-        Usuario nuevoUsuario = new Usuario(nombre, contrasena, rol);
-        nuevoUsuario.setSaldo(saldo);
-        listaUsuarios.add(nuevoUsuario);
-        System.out.println("Usuario" + nombre + " ha sido registrado exitosamente con un saldo inicial de: "
-                + nuevoUsuario.getSaldo());
     }
+
+    System.out.print(BLUE + "Elija el Rol (ADMIN/CLIENTE): " + RESET);
+    String rol = scanner.nextLine().toUpperCase();
+    if (!rol.equals("ADMIN") && !rol.equals("CLIENTE")) {
+        System.out.println(">>> Rol inválido. Debe ser ADMIN o CLIENTE <<<");
+        return;
+    }
+
+    System.out.print(BLUE + "Saldo inicial: " + RESET);
+    double saldo = 0.0;
+    try {
+        saldo = Double.parseDouble(scanner.nextLine());
+        if (saldo < 0) {
+            System.out.println(" >>> El saldo inicial no puede ser negativo. <<<");
+            return;
+        }
+    } catch (NumberFormatException e) {
+        System.out.println(">>> Saldo inválido. Se asigna 0 por defecto. <<<");
+    }
+
+    Usuario nuevoUsuario = new Usuario(nombre, contrasena, rol);
+    nuevoUsuario.setSaldo(saldo);
+    listaUsuarios.add(nuevoUsuario);
+    System.out.println("Usuario " + nombre + " ha sido registrado exitosamente con un saldo inicial de: "
+            + nuevoUsuario.getSaldo());
+}
+
 
     // METODO PARA MOSTRAR USUARIOS EXISTENTES
     public void mostrarUsuarios() {
