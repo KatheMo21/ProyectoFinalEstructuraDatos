@@ -8,49 +8,51 @@ import java.util.Scanner;
 /**
  * Controlador encargado de gestionar las operaciones CRUD de los productos.
  * permite
- *   Subir productos predefinidos.
- *   Crear nuevos productos.
- *   Listar productos en forma de tabla
- *   Editar productos existentes.
- *   Eliminar productos del sistema.
- *   Administrar el menú de gestión (CRUD) de productos.
+ * Subir productos predefinidos.
+ * Crear nuevos productos.
+ * Listar productos en forma de tabla
+ * Editar productos existentes.
+ * Eliminar productos del sistema.
+ * Administrar el menú de gestión (CRUD) de productos.
  *
  * @author
- * Katherin Yesenia Monroy Echeverry  
- * Mariana Salgado Lopez
- * Jaime Andres Rodriguez
+ *         Katherin Yesenia Monroy Echeverry
+ *         Mariana Salgado Lopez
+ *         Jaime Andres Rodriguez
  * @version 1.0
  */
 
 public class ProductoController {
-    
+
     /** Lista enlazada de productos registrados en el sistema. */
     private LinkedList<Producto> listaProductos = new LinkedList<>();
 
-     /** Identificador incremental para asignar IDs automáticos a los productos creados. */
+    /**
+     * Identificador incremental para asignar IDs automáticos a los productos
+     * creados.
+     */
     private int nextId = 1;
 
-      /** Controlador de proveedores asociado. */
+    /** Controlador de proveedores asociado. */
     private ProveedorController proveedorController;
 
     /** Proveedor por defecto utilizado para productos iniciales. */
     Proveedor proveedorOne = new Proveedor(1, "World Meditation", "18768463846");
 
     // ===== Colores ANSI para dar formato a la consola =====
-    final String RESET   = "\u001B[0m";   // reset
-    final String RED     = "\u001B[31m";  // rojo
-    final String GREEN   = "\u001B[32m";  // verde
-    final String YELLOW  = "\u001B[33m";  // amarillo
-    final String BLUE    = "\u001B[34m";  // azul
-    final String PURPLE  = "\u001B[35m";  // morado
-    final String CYAN    = "\u001B[36m";  // cian
-    final String WHITE   = "\u001B[37m";  // blanco
+    final String RESET = "\u001B[0m"; // reset
+    final String RED = "\u001B[31m"; // rojo
+    final String GREEN = "\u001B[32m"; // verde
+    final String YELLOW = "\u001B[33m"; // amarillo
+    final String BLUE = "\u001B[34m"; // azul
+    final String PURPLE = "\u001B[35m"; // morado
+    final String CYAN = "\u001B[36m"; // cian
+    final String WHITE = "\u001B[37m"; // blanco
 
     public ProductoController(ProveedorController proveedorController) {
         this.proveedorController = proveedorController;
     }
 
-    
     /**
      * Constructor de la clase ProductoController.
      * 
@@ -60,7 +62,8 @@ public class ProductoController {
         listaProductos.add(new Producto(1, "Jardín meditación", 128000, 10,
                 "Base en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", proveedorOne));
         listaProductos.add(new Producto(2, "Jardín Protección", 65200, 15,
-                "Base caracol en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.", proveedorOne));
+                "Base caracol en concreto, figura en yeso, arena, piedras, rastrillo, vela y palo santo.",
+                proveedorOne));
         listaProductos.add(new Producto(3, "Porta incienso mandala", 24500, 20,
                 "Ayuda a relajar el sistema nervioso y favorecer la concentración.", proveedorOne));
         listaProductos.add(new Producto(4, "Porta vela luna", 27300, 12,
@@ -76,10 +79,14 @@ public class ProductoController {
             return;
         }
 
-        System.out.println(CYAN + "\n+----+----------------------+------------+--------+-----------------------------+-------------------+" + RESET);
+        System.out.println(CYAN
+                + "\n+----+----------------------+------------+--------+-----------------------------+-------------------+"
+                + RESET);
         System.out.printf("| %-2s | %-20s | %-10.2s | %-6s | %-27s | %-17s |%n",
                 "ID", "Nombre", "Precio", "Stock", "Descripción", "Proveedor");
-        System.out.println(CYAN + "+----+----------------------+------------+--------+-----------------------------+-------------------+" + RESET);
+        System.out.println(CYAN
+                + "+----+----------------------+------------+--------+-----------------------------+-------------------+"
+                + RESET);
 
         for (Producto p : listaProductos) {
             System.out.printf("| %-2d | %-30s | %-10.2f | %-6d | %-50s | %-17s |%n",
@@ -91,17 +98,27 @@ public class ProductoController {
                     p.getProveedor().getNombre());
         }
 
-        System.out.println(CYAN + "+----+----------------------+------------+--------+-----------------------------+-------------------+" + RESET);
+        System.out.println(CYAN
+                + "+----+----------------------+------------+--------+-----------------------------+-------------------+"
+                + RESET);
     }
 
-      /**
+    /**
      * Crea un nuevo producto a partir de la entrada del usuario.
      * 
-     * @param scanner objeto Scanner para leer entradas desde consola.
-     * @param proveedorController controlador de proveedores para asociar un proveedor al producto.
+     * @param scanner             objeto Scanner para leer entradas desde consola.
+     * @param proveedorController controlador de proveedores para asociar un
+     *                            proveedor al producto.
      */
     public void crearProductos(Scanner scanner, ProveedorController proveedorController) {
-        int id = nextId++;
+        
+        int id;
+        if (listaProductos.isEmpty()) {
+            id = 1; 
+        } else {
+            // Tomar el id del último producto y sumarle 
+            id = listaProductos.getLast().getId() + 1;
+        }
 
         System.out.print(BLUE + "Nombre del Producto: " + RESET);
         String nombre = scanner.nextLine().trim();
@@ -122,23 +139,27 @@ public class ProductoController {
             System.out.print(BLUE + "Precio: " + RESET);
             try {
                 precio = Double.parseDouble(scanner.nextLine());
-                if (precio < 0) System.out.println(">>> El precio no puede ser negativo. <<<");
+                if (precio < 0)
+                    System.out.println(">>> El precio no puede ser negativo. <<<");
             } catch (NumberFormatException e) {
                 System.out.println(">>> Precio inválido. Debe ser un número. <<<");
             }
         }
 
         int stock = -1;
+
         while (stock < 0) {
             System.out.print(BLUE + "Stock: " + RESET);
             try {
                 stock = Integer.parseInt(scanner.nextLine());
-                if (stock < 0) System.out.println(">>> El stock no puede ser negativo. <<<");
+                if (stock < 0) {
+                    System.out.println(">>> El stock no puede ser negativo. <<<");
+                }
             } catch (NumberFormatException e) {
                 System.out.println(">>> Stock inválido. Debe ser un número entero. <<<");
+                stock = -1; // mantenemos el ciclo hasta que se ingrese un número válido
             }
         }
-
         // Asociar proveedor
         Proveedor proveedor = proveedorController.registrarProveedor(scanner);
 
@@ -146,7 +167,7 @@ public class ProductoController {
         System.out.println(">>> El producto '" + nombre + "' ha sido creado exitosamente. <<<");
     }
 
-  /**
+    /**
      * Busca un producto por su ID.
      * 
      * @param id identificador único del producto.
@@ -154,7 +175,8 @@ public class ProductoController {
      */
     public Producto buscarProductos(int id) {
         for (Producto p : listaProductos) {
-            if (p.getId() == id) return p;
+            if (p.getId() == id)
+                return p;
         }
         return null;
     }
@@ -167,15 +189,18 @@ public class ProductoController {
      */
     public Producto buscarProductoPorNombre(String nombre) {
         for (Producto p : listaProductos) {
-            if (p.getNombreProducto().equalsIgnoreCase(nombre)) return p;
+            if (p.getNombreProducto().equalsIgnoreCase(nombre))
+                return p;
         }
         return null;
     }
-   /**
+
+    /**
      * Permite editar los datos de un producto existente.
      * 
      * @param scanner objeto Scanner para capturar la entrada del usuario.
      */
+
     public void editarProductos(Scanner scanner) {
         System.out.print(BLUE + "ID del producto a editar: " + RESET);
         int id;
@@ -194,35 +219,63 @@ public class ProductoController {
 
         System.out.print(BLUE + "Nuevo nombre (actual: " + p.getNombreProducto() + "): " + RESET);
         String nuevoNombre = scanner.nextLine();
-        if (!nuevoNombre.isEmpty()) p.setNombreProducto(nuevoNombre);
+        if (!nuevoNombre.isEmpty())
+            p.setNombreProducto(nuevoNombre);
 
         System.out.print(BLUE + "Nuevo precio: " + RESET);
-        String precioStr = scanner.nextLine();
-        if (!precioStr.isEmpty()) {
+        while (true) {
+            String precioStr = scanner.nextLine().trim();
+
+            if (precioStr.isEmpty()) {
+                break;
+            }
+
             try {
                 double nuevoPrecio = Double.parseDouble(precioStr);
-                if (nuevoPrecio >= 0) p.setPrecio(nuevoPrecio);
-                else System.out.println(">>> El precio no puede ser negativo. <<<" + RESET);
+                if (nuevoPrecio >= 0) {
+                    p.setPrecio(nuevoPrecio);
+                    break; // precio válido, salimos
+                } else {
+                    System.out.println(">>> El precio no puede ser negativo. <<<" + RESET);
+                }
             } catch (NumberFormatException e) {
                 System.out.println(">>> Precio inválido. <<<");
             }
+
+            System.out.print(BLUE + "Nuevo precio: " + RESET);
         }
 
         System.out.print(BLUE + "Nuevo stock: " + RESET);
-        try {
-            int nuevoStock = Integer.parseInt(scanner.nextLine());
-            if (nuevoStock >= 0) p.setStock(nuevoStock);
-            else System.out.println(">>> El stock no puede ser menor que cero. <<<");
-        } catch (NumberFormatException e) {
-            System.out.println(">>> Stock inválido. <<<");
+        while (true) {
+            String stockStr = scanner.nextLine().trim();
+
+            if (stockStr.isEmpty()) {
+                break;
+            }
+
+            try {
+                int nuevoStock = Integer.parseInt(stockStr);
+                if (nuevoStock >= 0) {
+                    p.setStock(nuevoStock);
+                    break;
+                } else {
+                    System.out.println(">>> El stock no puede ser menor que cero. <<<");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(">>> Stock inválido. <<<");
+            }
+
+            System.out.print(BLUE + "Nuevo stock: " + RESET);
         }
 
         System.out.print(BLUE + "Nueva descripción: " + RESET);
         String nuevaDescripcion = scanner.nextLine();
-        if (!nuevaDescripcion.isEmpty()) p.setDescricpion(nuevaDescripcion);
+        if (!nuevaDescripcion.isEmpty())
+            p.setDescricpion(nuevaDescripcion);
 
         System.out.println(">>> Producto actualizado correctamente. <<<");
     }
+
     /**
      * Elimina un producto de la lista.
      * 
@@ -245,7 +298,8 @@ public class ProductoController {
         listaProductos.remove(p);
         System.out.println(">>> Producto eliminado exitosamente. <<<");
     }
-   /**
+
+    /**
      * Menú interactivo que permite gestionar las operaciones CRUD de los productos.
      * 
      * @param scanner objeto Scanner para leer entradas desde consola.
@@ -266,12 +320,22 @@ public class ProductoController {
 
             String opcion = scanner.nextLine();
             switch (opcion) {
-                case "1": listarProductos(); break;
-                case "2": crearProductos(scanner, proveedorController); break;
-                case "3": editarProductos(scanner); break;
-                case "4": eliminarProductos(scanner); break;
-                case "5": return;
-                default: System.out.println(">>> Opción inválida. <<<");
+                case "1":
+                    listarProductos();
+                    break;
+                case "2":
+                    crearProductos(scanner, proveedorController);
+                    break;
+                case "3":
+                    editarProductos(scanner);
+                    break;
+                case "4":
+                    eliminarProductos(scanner);
+                    break;
+                case "5":
+                    return;
+                default:
+                    System.out.println(">>> Opción inválida. <<<");
             }
         }
     }

@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Controlador encargado de gestionar las operaciones CRUD (Crear, Leer, 
+ * Controlador encargado de gestionar las operaciones CRUD (Crear, Leer,
  * Actualizar y Eliminar) de los proveedores en el sistema.
  *
  * Permite registrar, listar, buscar, editar y eliminar proveedores.
  * Además, incluye un menú interactivo para la administración.
  * 
  *
- * @author 
- * Katherin Yesenia Monroy Echeverry  
- * Mariana Salgado Lopez
- * Jaime Andres Rodriguez 
+ * @author
+ *         Katherin Yesenia Monroy Echeverry
+ *         Mariana Salgado Lopez
+ *         Jaime Andres Rodriguez
  * @version 1.0
  */
 public class ProveedorController {
@@ -26,22 +26,23 @@ public class ProveedorController {
     /** Contador autoincremental para asignar ID único a cada proveedor. */
     private int nextId = 1; // ID autoincremental
 
- // ====== Códigos ANSI para colores en consola ======
-    final String RESET   = "\u001B[0m";
-    final String RED     = "\u001B[31m";
-    final String GREEN   = "\u001B[32m";
-    final String YELLOW  = "\u001B[33m";
-    final String BLUE    = "\u001B[34m";
-    final String PURPLE  = "\u001B[35m";
-    final String CYAN    = "\u001B[36m";
-    final String WHITE   = "\u001B[37m";
+    // ====== Códigos ANSI para colores en consola ======
+    final String RESET = "\u001B[0m";
+    final String RED = "\u001B[31m";
+    final String GREEN = "\u001B[32m";
+    final String YELLOW = "\u001B[33m";
+    final String BLUE = "\u001B[34m";
+    final String PURPLE = "\u001B[35m";
+    final String CYAN = "\u001B[36m";
+    final String WHITE = "\u001B[37m";
 
-   /**
+    /**
      * Registra un nuevo proveedor en el sistema.
      *
      * @param scanner Scanner para capturar la entrada del usuario
-     * @return el proveedor creado si el registro fue exitoso, 
-     *         o {@code null} si hubo algún error (nombre/contacto vacío o repetido).
+     * @return el proveedor creado si el registro fue exitoso,
+     *         o {@code null} si hubo algún error (nombre/contacto vacío o
+     *         repetido).
      */
     public Proveedor registrarProveedor(Scanner scanner) {
         System.out.print(BLUE + "Nombre del proveedor: " + RESET);
@@ -51,12 +52,24 @@ public class ProveedorController {
             return null;
         }
 
+        
+        String contacto = "";
+        while (true) {
         System.out.print(BLUE + "Contacto: " + RESET);
-        String contacto = scanner.nextLine().trim();
+        contacto = scanner.nextLine().trim();
+
         if (contacto.isEmpty()) {
             System.out.println(RED + ">>> El contacto no puede estar vacío. <<<" + RESET);
-            return null;
+            continue; // vuelve a pedirlo
         }
+
+        if (!contacto.matches("\\d+")) {
+            System.out.println(RED + ">>> El contacto debe contener solo números. <<<" + RESET);
+            continue; // vuelve a pedirlo
+        }
+
+        break; // ✅ contacto válido → salimos del bucle
+    }
 
         for (Proveedor p : listaProveedores) {
             if (p.getNombre().equalsIgnoreCase(nombre)) {
@@ -73,7 +86,7 @@ public class ProveedorController {
         return nuevo;
     }
 
-/**
+    /**
      * Busca un proveedor en la lista por su ID.
      *
      * @param id identificador del proveedor
@@ -88,7 +101,7 @@ public class ProveedorController {
         return null;
     }
 
-      /**
+    /**
      * Busca un proveedor en la lista por su nombre.
      *
      * @param nombre nombre del proveedor a buscar
@@ -102,7 +115,8 @@ public class ProveedorController {
         }
         return null;
     }
-   /**
+
+    /**
      * Muestra en consola todos los proveedores registrados en formato tabla.
      * Si no existen proveedores, se muestra un mensaje de advertencia.
      */
@@ -125,7 +139,7 @@ public class ProveedorController {
         System.out.println(BLUE + "+-----+----------------------+----------------------+" + RESET);
     }
 
-      /**
+    /**
      * Permite editar los datos de un proveedor existente.
      * El usuario debe ingresar el ID del proveedor y luego los nuevos valores.
      *
@@ -162,7 +176,7 @@ public class ProveedorController {
         System.out.println(GREEN + ">>> Proveedor actualizado correctamente. <<<" + RESET);
     }
 
-      /**
+    /**
      * Elimina un proveedor del sistema a partir de su ID.
      *
      * @param scanner Scanner para capturar la entrada del usuario
@@ -187,7 +201,7 @@ public class ProveedorController {
         System.out.println(GREEN + ">>> Proveedor eliminado correctamente. <<<" + RESET);
     }
 
-/**
+    /**
      * Devuelve la lista de todos los proveedores registrados.
      *
      * @return lista de proveedores
@@ -196,7 +210,7 @@ public class ProveedorController {
         return listaProveedores;
     }
 
-     /**
+    /**
      * Muestra el menú CRUD de proveedores en consola y permite al usuario
      * interactuar para listar, registrar, editar, eliminar o buscar proveedores.
      *
